@@ -10,7 +10,7 @@
 
     body {
       margin: 0;
-      background: url('testbgbunt.gif') center center / cover no-repeat fixed;
+      background: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -49,21 +49,24 @@
       display: none;
     }
     .switch-btn .switch-img {
-      transition: transform 0.2s;
+      transition: transform 0.2s, filter 0.2s;
     }
     .switch-btn.active .switch-img {
       transform: scale(1.2);
       border-radius: 12px;
-      /* No box-shadow */
+      filter: none;
+    }
+    .switch-btn:not(.active) .switch-img {
+      filter: grayscale(100%) contrast(1.1);
     }
     .viewer-description {
       margin-top: 24px;
       font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
       font-size: 1.13rem;
       color: #222;
-      background: rgba(255,255,255,0.85);
-      border-radius: 10px;
-      padding: 18px 20px;
+      background: #ffdcea;
+      border-radius: 22px;
+      padding: 23px 22px;
       max-width: 700px;
       box-sizing: border-box;
       line-height: 1.6;
@@ -78,18 +81,25 @@
         min-height: 180px;
       }
     }
+    .followme-btn:hover {
+      height: 250px;
+    }
+    .followme-btn-small:hover {
+      height: 280px;
+    }
   </style>
 </head>
 <body>
 
-<h1>semesterprojekt</h1>
+<img src="title.png" alt="Titel"
+  style="display:block;max-width:640px;width:100%;height:auto;margin:48px 0 35px 0;">
 
 <div class="switch-btns">
   <button id="showViewer1" class="switch-btn active" style="background:none;border:none;padding:0;">
-    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img" style="height:56px;">
+    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img" style="height:44px;">
   </button>
   <button id="showViewer2" class="switch-btn" style="background:none;border:none;padding:0;">
-    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img" style="height:56px;">
+    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img" style="height:44px;">
   </button>
 </div>
 
@@ -106,20 +116,9 @@
     alt="3D model">
   </model-viewer>
   <div class="viewer-description">
-    Der Platz zwischen Stadion und Arena<br><br>
-    Zwischen dem Volksparkstadion und der Barclays Arena liegt ein Ort, an dem sich Sport, Musik und Gemeinschaft begegnen. Umgeben vom grünen Altonaer Volkspark bietet dieser Platz Raum für Begegnung, Bewegung und besondere Momente – ob vor dem Anpfiff, zwischen zwei Konzerten oder einfach beim Spaziergang durchs Grüne.<br><br>
-    An Veranstaltungstagen verwandelt sich die Fläche in einen lebendigen Treffpunkt für Fans und Besucher aus aller Welt. Abseits der Events lädt die offene Umgebung zum Verweilen ein – mit Blick auf zwei der bedeutendsten Veranstaltungsorte Hamburgs.<br><br>
-    Hier trifft Natur auf urbanes Leben, Stadionstimmung auf Konzertfieber – ein Ort, der Hamburgs Vielfalt spürbar macht.
-    
-    <div style="margin-top:32px;display:flex;justify-content:center;">
-      <iframe width="360" height="640"
-        src="https://www.youtube.com/embed/EiTBJ-vXIYY"
-        title="YouTube Video"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    </div>
+     Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
   </div>
 </div>
 
@@ -136,11 +135,26 @@
     alt="Second 3D model">
   </model-viewer>
   <div class="viewer-description">
-    Der Platz zwischen Stadion und Arena<br><br>
-    Zwischen dem Volksparkstadion und der Barclays Arena liegt ein Ort, an dem sich Sport, Musik und Gemeinschaft begegnen. Umgeben vom grünen Altonaer Volkspark bietet dieser Platz Raum für Begegnung, Bewegung und besondere Momente – ob vor dem Anpfiff, zwischen zwei Konzerten oder einfach beim Spaziergang durchs Grüne.<br><br>
-    An Veranstaltungstagen verwandelt sich die Fläche in einen lebendigen Treffpunkt für Fans und Besucher aus aller Welt. Abseits der Events lädt die offene Umgebung zum Verweilen ein – mit Blick auf zwei der bedeutendsten Veranstaltungsorte Hamburgs.<br><br>
-    Hier trifft Natur auf urbanes Leben, Stadionstimmung auf Konzertfieber – ein Ort, der Hamburgs Vielfalt spürbar macht.
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
   </div>
+</div>
+
+<div style="margin-top:32px;display:flex;justify-content:center;">
+  <iframe width="360" height="640"
+    src="https://www.youtube.com/embed/EiTBJ-vXIYY"
+    title="YouTube Video"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<div style="margin:48px 0 12px 0; display:flex; justify-content:center;">
+  <a href="https://www.instagram.com/schninnaa/" target="_blank" style="background:none; border:none; padding:0;">
+    <img src="followme.png" alt="Instagram" style="height:240px; width:auto; display:block;">
+  </a>
 </div>
 
 <script>
