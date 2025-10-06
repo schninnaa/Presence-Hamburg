@@ -44,12 +44,27 @@
       margin: 24px 0;
       display: flex;
       gap: 12px;
+      width: 100%;
+      max-width: 700px;
+      box-sizing: border-box;
+      justify-content: center;
     }
-    .hidden {
-      display: none;
+    .switch-btn {
+      flex: 1 1 0;
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .switch-btn .switch-img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
       transition: transform 0.2s, filter 0.2s;
+      aspect-ratio: 1/1;
+      object-fit: contain;
     }
     .switch-btn.active .switch-img {
       transform: scale(1.2);
@@ -58,6 +73,9 @@
     }
     .switch-btn:not(.active) .switch-img {
       filter: grayscale(100%) contrast(1.1);
+    }
+    .hidden {
+      display: none;
     }
     .viewer-description {
       margin-top: 24px;
@@ -83,6 +101,10 @@
       .switch-btns {
         margin-left: 16px;
         margin-right: 16px;
+        max-width: 100%;
+      }
+      .switch-btn .switch-img {
+        max-width: 100px;
       }
     }
     .followme-btn:hover {
