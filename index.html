@@ -6,13 +6,18 @@
   <title>AR Model – All Animations</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
+
     body {
       margin: 0;
-      background: #cee7ff;
+      background: url('testbgbunt.gif') center center / cover no-repeat fixed;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px;
+    }
+    h1 {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     }
     .viewer-container {
       width: 100%;
@@ -21,16 +26,48 @@
       box-sizing: border-box;
       display: flex;
       justify-content: center;
+      flex-direction: column;
+      align-items: center;
     }
     model-viewer {
       width: 100%;
       height: 50vw;
       max-height: 600px;
       min-height: 300px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      /* Remove background and border */
+      background: none;
+      border-radius: 0;
+      box-shadow: none;
       transition: width 0.3s, height 0.3s;
+    }
+    .switch-btns {
+      margin: 24px 0;
+      display: flex;
+      gap: 12px;
+    }
+    .hidden {
+      display: none;
+    }
+    .switch-btn .switch-img {
+      transition: transform 0.2s;
+    }
+    .switch-btn.active .switch-img {
+      transform: scale(1.2);
+      border-radius: 12px;
+      /* No box-shadow */
+    }
+    .viewer-description {
+      margin-top: 24px;
+      font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
+      font-size: 1.13rem;
+      color: #222;
+      background: rgba(255,255,255,0.85);
+      border-radius: 10px;
+      padding: 18px 20px;
+      max-width: 700px;
+      box-sizing: border-box;
+      line-height: 1.6;
+      text-align: left;
     }
     @media (max-width: 600px) {
       .viewer-container {
@@ -47,7 +84,16 @@
 
 <h1>semesterprojekt</h1>
 
-<div class="viewer-container">
+<div class="switch-btns">
+  <button id="showViewer1" class="switch-btn active" style="background:none;border:none;padding:0;">
+    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img" style="height:56px;">
+  </button>
+  <button id="showViewer2" class="switch-btn" style="background:none;border:none;padding:0;">
+    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img" style="height:56px;">
+  </button>
+</div>
+
+<div class="viewer-container" id="container1">
   <model-viewer
     id="viewer"
     src="semesterproject2.glb"
@@ -59,9 +105,15 @@
     autoplay
     alt="3D model">
   </model-viewer>
+  <div class="viewer-description">
+    Der Platz zwischen Stadion und Arena<br><br>
+    Zwischen dem Volksparkstadion und der Barclays Arena liegt ein Ort, an dem sich Sport, Musik und Gemeinschaft begegnen. Umgeben vom grünen Altonaer Volkspark bietet dieser Platz Raum für Begegnung, Bewegung und besondere Momente – ob vor dem Anpfiff, zwischen zwei Konzerten oder einfach beim Spaziergang durchs Grüne.<br><br>
+    An Veranstaltungstagen verwandelt sich die Fläche in einen lebendigen Treffpunkt für Fans und Besucher aus aller Welt. Abseits der Events lädt die offene Umgebung zum Verweilen ein – mit Blick auf zwei der bedeutendsten Veranstaltungsorte Hamburgs.<br><br>
+    Hier trifft Natur auf urbanes Leben, Stadionstimmung auf Konzertfieber – ein Ort, der Hamburgs Vielfalt spürbar macht.
+  </div>
 </div>
 
-<div class="viewer-container" style="margin-top:32px;">
+<div class="viewer-container hidden" id="container2">
   <model-viewer
     id="viewer2"
     src="semesterproject 2.2test.glb"
@@ -73,42 +125,55 @@
     autoplay
     alt="Second 3D model">
   </model-viewer>
+  <div class="viewer-description">
+    Der Platz zwischen Stadion und Arena<br><br>
+    Zwischen dem Volksparkstadion und der Barclays Arena liegt ein Ort, an dem sich Sport, Musik und Gemeinschaft begegnen. Umgeben vom grünen Altonaer Volkspark bietet dieser Platz Raum für Begegnung, Bewegung und besondere Momente – ob vor dem Anpfiff, zwischen zwei Konzerten oder einfach beim Spaziergang durchs Grüne.<br><br>
+    An Veranstaltungstagen verwandelt sich die Fläche in einen lebendigen Treffpunkt für Fans und Besucher aus aller Welt. Abseits der Events lädt die offene Umgebung zum Verweilen ein – mit Blick auf zwei der bedeutendsten Veranstaltungsorte Hamburgs.<br><br>
+    Hier trifft Natur auf urbanes Leben, Stadionstimmung auf Konzertfieber – ein Ort, der Hamburgs Vielfalt spürbar macht.
+  </div>
 </div>
 
 <script>
-  const viewer = document.getElementById('viewer');
-  viewer.addEventListener('load', () => {
-    const list = viewer.availableAnimations || [];
-    if (list.length > 1) {
-      let i = 0;
-      const playNext = () => {
-        viewer.animationName = list[i];
-        viewer.play();
-        viewer.addEventListener('finished', () => {
-          i = (i + 1) % list.length;
-          playNext();
-        }, { once: true });
-      };
-      playNext();
-    }
-  });
+  // Animation logic for both viewers
+  function setupViewerAnimations(viewer) {
+    viewer.addEventListener('load', () => {
+      const list = viewer.availableAnimations || [];
+      if (list.length > 1) {
+        let i = 0;
+        const playNext = () => {
+          viewer.animationName = list[i];
+          viewer.play();
+          viewer.addEventListener('finished', () => {
+            i = (i + 1) % list.length;
+            playNext();
+          }, { once: true });
+        };
+        playNext();
+      }
+    });
+  }
 
-  const viewer2 = document.getElementById('viewer2');
-  viewer2.addEventListener('load', () => {
-    const list = viewer2.availableAnimations || [];
-    if (list.length > 1) {
-      let i = 0;
-      const playNext = () => {
-        viewer2.animationName = list[i];
-        viewer2.play();
-        viewer2.addEventListener('finished', () => {
-          i = (i + 1) % list.length;
-          playNext();
-        }, { once: true });
-      };
-      playNext();
-    }
-  });
+  setupViewerAnimations(document.getElementById('viewer'));
+  setupViewerAnimations(document.getElementById('viewer2'));
+
+  // Switch logic
+  const container1 = document.getElementById('container1');
+  const container2 = document.getElementById('container2');
+  const btn1 = document.getElementById('showViewer1');
+  const btn2 = document.getElementById('showViewer2');
+
+  btn1.onclick = () => {
+    container1.classList.remove('hidden');
+    container2.classList.add('hidden');
+    btn1.classList.add('active');
+    btn2.classList.remove('active');
+  };
+  btn2.onclick = () => {
+    container2.classList.remove('hidden');
+    container1.classList.add('hidden');
+    btn2.classList.add('active');
+    btn1.classList.remove('active');
+  };
 </script>
 
 </body>
