@@ -75,7 +75,7 @@ model-viewer {
   display: none;
 }
 
-/* --- Description below YouTube --- */
+/* Description + button below YouTube */
 .description-wrapper {
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ model-viewer {
 }
 
 .description-button img {
-  width: 144px; /* 20% smaller */
+  width: 120px; /* smaller */
   height: auto;
   transition: transform 0.2s;
 }
@@ -104,30 +104,27 @@ model-viewer {
   transform: scale(1.05);
 }
 
-/* --- Description box --- */
+/* --- Main fix: background image fully visible vertically --- */
 .viewer-description {
   display: none;
   font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 1.13rem;
   color: #222;
-  background: url('ballon click2.png') no-repeat center center;
-  background-size: 100% auto; /* scale proportionally to fit text vertically */
-  background-repeat: no-repeat;
-  padding: 60px 30px; /* adds breathing room */
+  background: url('ballon click2.png') center center no-repeat;
+  background-size: auto 100%; /* ensures it fits the text height perfectly */
+  padding: 60px 30px;
   max-width: 700px;
   line-height: 1.6;
   text-align: left;
   width: 100%;
   box-sizing: border-box;
-  background-clip: content-box;
-  background-origin: content-box;
   overflow: visible;
 }
 
 @media (max-width: 600px) {
   .viewer-description {
     padding: 50px 18px;
-    background-size: 120% auto; /* allow more vertical fit on mobile */
+    background-size: auto 100%;
   }
 }
 </style>
@@ -205,7 +202,7 @@ model-viewer {
 </div>
 
 <!-- Pop sound -->
-<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701,mp3" preload="auto"></audio>
+<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
 
 <script>
   // Switch viewers
@@ -227,7 +224,7 @@ model-viewer {
     btn1.classList.remove('active');
   };
 
-  // Description toggle with sound
+  // Button sound and description toggle
   function toggleDescription(descId, btnId) {
     const desc = document.getElementById(descId);
     const btn = document.getElementById(btnId);
