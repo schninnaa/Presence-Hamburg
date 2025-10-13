@@ -1,132 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presence AR</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Presence AR</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
 
-    body {
-      margin: 0;
-      background: url('asphalt_02.jpg') left top repeat-x;
-      background-size: 100% auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+body {
+  margin: 0;
+  background: url('asphalt_02.jpg') left top repeat-x;
+  background-size: 100% auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-    .viewer-container {
-      width: 100%;
-      max-width: 900px;
-      padding: 0 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 32px;
-    }
+.viewer-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
 
-    model-viewer {
-      width: 100%;
-      height: 50vw;
-      max-height: 600px;
-      min-height: 300px;
-      background: none;
-    }
+model-viewer {
+  width: 100%;
+  height: 50vw;
+  max-height: 600px;
+  min-height: 300px;
+  background: none;
+}
 
-    .switch-btns {
-      margin: 24px 0;
-      display: flex;
-      gap: 12px;
-      width: 100%;
-      max-width: 700px;
-      justify-content: center;
-    }
+.switch-btns {
+  margin: 24px 0;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 700px;
+  justify-content: center;
+}
 
-    .switch-btn {
-      background: none;
-      border: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
+.switch-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 
-    .switch-btn .switch-img {
-      width: 100%;
-      max-width: 210px;
-      height: auto;
-      transition: transform 0.2s, filter 0.2s;
-    }
+.switch-btn .switch-img {
+  width: 100%;
+  max-width: 210px;
+  height: auto;
+  transition: transform 0.2s, filter 0.2s;
+}
 
-    .switch-btn.active .switch-img {
-      transform: scale(1.2);
-      filter: none;
-    }
+.switch-btn.active .switch-img {
+  transform: scale(1.2);
+  filter: none;
+}
 
-    .switch-btn:not(.active) .switch-img {
-      filter: grayscale(100%) contrast(1.1);
-    }
+.switch-btn:not(.active) .switch-img {
+  filter: grayscale(100%) contrast(1.1);
+}
 
-    .hidden {
-      display: none;
-    }
+.hidden {
+  display: none;
+}
 
-    /* === Description wrapper === */
-    .description-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      margin-top: 16px;
-    }
+/* --- Description below YouTube --- */
+.description-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 32px;
+}
 
-    .description-button {
-      background: none;
-      border: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      cursor: pointer;
-      margin-bottom: 16px;
-    }
+.description-button {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
 
-    .description-button img {
-      width: 180px;
-      height: auto;
-      transition: transform 0.2s;
-    }
+.description-button img {
+  width: 180px;
+  height: auto;
+  transition: transform 0.2s;
+}
 
-    .description-button img:hover {
-      transform: scale(1.05);
-    }
+.description-button img:hover {
+  transform: scale(1.05);
+}
 
-    .viewer-description {
-      display: none;
-      font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
-      font-size: 1.13rem;
-      color: #222;
-      background: url('ballon click2.png') no-repeat top center;
-      background-size: 100% 100%; /* stretch to full div height */
-      border-radius: 22px;
-      padding: 70px 28px;
-      max-width: 700px;
-      line-height: 1.6;
-      text-align: left;
-      width: 100%;
-      box-sizing: border-box;
-    }
+.viewer-description {
+  display: none;
+  font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-size: 1.13rem;
+  color: #222;
+  background: url('ballon click2.png') no-repeat center top;
+  background-size: auto; /* original size, overflow if needed */
+  border-radius: 22px;
+  padding: 70px 28px;
+  max-width: 700px;
+  line-height: 1.6;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
 
-    @media (max-width: 600px) {
-      .viewer-description {
-        padding: 50px 18px;
-      }
-    }
-
-  </style>
+@media (max-width: 600px) {
+  .viewer-description {
+    padding: 50px 18px;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -141,7 +141,7 @@
   </button>
 </div>
 
-<!-- === Viewer 1 === -->
+<!-- 3D viewers -->
 <div class="viewer-container" id="container1">
   <model-viewer
     id="viewer"
@@ -156,7 +156,6 @@
   </model-viewer>
 </div>
 
-<!-- === Viewer 2 === -->
 <div class="viewer-container hidden" id="container2">
   <model-viewer
     id="viewer2"
@@ -171,28 +170,7 @@
   </model-viewer>
 </div>
 
-<!-- === Description + Button BELOW Video === -->
-<div class="description-wrapper">
-  <button class="description-button" id="descBtn1" onclick="toggleDescription('desc1','descBtn1')">
-    <img src="ballon click.png" alt="Show Description">
-  </button>
-  <div class="viewer-description" id="desc1">
-    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-  </div>
-
-  <button class="description-button" id="descBtn2" onclick="toggleDescription('desc2','descBtn2')">
-    <img src="ballon click.png" alt="Show Description">
-  </button>
-  <div class="viewer-description" id="desc2">
-    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-  </div>
-</div>
-
-<!-- Video -->
+<!-- YouTube video -->
 <div style="margin-top:32px;display:flex;justify-content:center;">
   <iframe width="360" height="640"
     src="https://www.youtube.com/embed/EiTBJ-vXIYY"
@@ -201,6 +179,18 @@
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen>
   </iframe>
+</div>
+
+<!-- Description below video -->
+<div class="description-wrapper">
+  <button class="description-button" id="descBtn" onclick="toggleDescription('desc','descBtn')">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
+  <div class="viewer-description" id="desc">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
+  </div>
 </div>
 
 <!-- Instagram -->
@@ -232,7 +222,7 @@
     btn1.classList.remove('active');
   };
 
-  // Toggle description + hide button + play sound
+  // Show description + hide button + play sound
   function toggleDescription(descId, btnId) {
     const desc = document.getElementById(descId);
     const btn = document.getElementById(btnId);
