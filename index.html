@@ -25,6 +25,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-bottom: 32px;
     }
 
     model-viewer {
@@ -74,13 +75,13 @@
       display: none;
     }
 
-    /* --- Description wrapper --- */
+    /* === Description wrapper === */
     .description-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
-      margin-top: 20px;
+      margin-top: 16px;
     }
 
     .description-button {
@@ -108,15 +109,15 @@
       font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
       font-size: 1.13rem;
       color: #222;
-      background: url('ballon click2.png') no-repeat center top;
-      background-size: contain; /* show full balloon */
+      background: url('ballon click2.png') no-repeat top center;
+      background-size: 100% 100%; /* stretch to full div height */
       border-radius: 22px;
       padding: 70px 28px;
       max-width: 700px;
       line-height: 1.6;
       text-align: left;
-      position: relative;
-      overflow-x: visible; /* allow horizontal overflow */
+      width: 100%;
+      box-sizing: border-box;
     }
 
     @media (max-width: 600px) {
@@ -153,18 +154,6 @@
     autoplay
     alt="3D model">
   </model-viewer>
-
-  <div class="description-wrapper">
-    <button class="description-button" id="descBtn1" onclick="toggleDescription('desc1','descBtn1')">
-      <img src="ballon click.png" alt="Show Description">
-    </button>
-
-    <div class="viewer-description" id="desc1">
-      Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-      On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-      Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-    </div>
-  </div>
 </div>
 
 <!-- === Viewer 2 === -->
@@ -180,17 +169,26 @@
     autoplay
     alt="Second 3D model">
   </model-viewer>
+</div>
 
-  <div class="description-wrapper">
-    <button class="description-button" id="descBtn2" onclick="toggleDescription('desc2','descBtn2')">
-      <img src="ballon click.png" alt="Show Description">
-    </button>
+<!-- === Description + Button BELOW Video === -->
+<div class="description-wrapper">
+  <button class="description-button" id="descBtn1" onclick="toggleDescription('desc1','descBtn1')">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
+  <div class="viewer-description" id="desc1">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
+  </div>
 
-    <div class="viewer-description" id="desc2">
-      Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-      On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-      Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-    </div>
+  <button class="description-button" id="descBtn2" onclick="toggleDescription('desc2','descBtn2')">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
+  <div class="viewer-description" id="desc2">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
   </div>
 </div>
 
@@ -215,28 +213,6 @@
 <audio id="clickSound" src="click-sound.mp3" preload="auto"></audio>
 
 <script>
-  // Animation logic
-  function setupViewerAnimations(viewer) {
-    viewer.addEventListener('load', () => {
-      const list = viewer.availableAnimations || [];
-      if (list.length > 1) {
-        let i = 0;
-        const playNext = () => {
-          viewer.animationName = list[i];
-          viewer.play();
-          viewer.addEventListener('finished', () => {
-            i = (i + 1) % list.length;
-            playNext();
-          }, { once: true });
-        };
-        playNext();
-      }
-    });
-  }
-
-  setupViewerAnimations(document.getElementById('viewer'));
-  setupViewerAnimations(document.getElementById('viewer2'));
-
   // Switch viewers
   const container1 = document.getElementById('container1');
   const container2 = document.getElementById('container2');
