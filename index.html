@@ -96,3 +96,220 @@ model-viewer {
   margin-top: 60px;
   animation: balloonFloat 6s ease-in-out infinite;
 }
+
+.description-button img {
+  width: 120px;
+  height: auto;
+  transition: transform 0.2s;
+}
+
+.description-button img:hover {
+  transform: scale(1.05);
+}
+
+/* Balloon floating effect */
+@keyframes balloonFloat {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  20% { transform: translate(3px, -4px) rotate(-2deg); }
+  40% { transform: translate(-2px, 3px) rotate(1deg); }
+  60% { transform: translate(2px, -3px) rotate(0deg); }
+  80% { transform: translate(-3px, 2px) rotate(2deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+.viewer-description {
+  display: none;
+  position: relative;
+  font-size: 1.2rem;
+  color: #222;
+  padding: 60px 30px;
+  line-height: 1.6;
+  text-align: left;
+  width: auto;
+  max-width: 700px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.viewer-description::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200vw; 
+  height: 100%;
+  transform: translateX(-50%);
+  background: url('ballon click2.png') center center no-repeat;
+  background-size: auto 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Oval YouTube wrapper */
+.youtube-wrapper {
+  width: 460px;
+  height: 740px;
+  border-radius: 8% / 5%;
+  overflow: hidden;
+  margin: 32px auto;
+}
+
+.youtube-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Follow Me button at bottom with larger top margin */
+.follow-btn-wrapper {
+  display: flex;
+  justify-content: center; 
+  margin: 120px 0 0 0;     
+}
+
+.follow-btn-wrapper img {
+  width: 360px;           
+  height: auto;
+  display: block;         
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.follow-btn-wrapper img:hover {
+  transform: scale(1.05);
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .viewer-description {
+    padding: 50px 18px;
+  }
+  .viewer-description::before {
+    width: 250vw;
+  }
+  .youtube-wrapper {
+    width: 80vw;
+    height: calc(80vw * 1.77);
+  }
+  .switch-btns {
+    width: 100%;
+    justify-content: center;
+    margin: 0 auto;
+    gap: 10px;
+  }
+  .switch-btn .switch-img {
+    width: auto;  
+    height: 36px; /* smaller on mobile */
+  }
+}
+</style>
+</head>
+<body>
+
+<img src="title.png" alt="Titel" style="display:block;max-width:640px;width:100%;height:auto;margin:48px 0 35px 0;">
+
+<div class="switch-btns">
+  <button id="showViewer1" class="switch-btn active">
+    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img">
+  </button>
+  <button id="showViewer2" class="switch-btn">
+    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img">
+  </button>
+</div>
+
+<div class="viewer-container" id="container1">
+  <model-viewer
+    id="viewer"
+    src="semesterproject2.glb"
+    ios-src="semesterproject2.usdz"
+    ar
+    ar-modes="scene-viewer quick-look webxr"
+    camera-controls
+    auto-rotate
+    autoplay
+    alt="3D model">
+  </model-viewer>
+</div>
+
+<div class="viewer-container hidden" id="container2">
+  <model-viewer
+    id="viewer2"
+    src="semesterproject2.2test.glb"
+    ios-src="semesterproject2.2test.usdz"
+    ar
+    ar-modes="scene-viewer quick-look webxr"
+    camera-controls
+    auto-rotate
+    autoplay
+    alt="Second 3D model">
+  </model-viewer>
+</div>
+
+<div class="youtube-wrapper">
+  <iframe 
+    src="https://www.youtube.com/embed/EiTBJ-vXIYY"
+    title="YouTube Video"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<div class="description-wrapper">
+  <button class="description-button" id="descBtn" onclick="toggleDescription('desc','descBtn')">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
+  <div class="viewer-description" id="desc">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
+  </div>
+</div>
+
+<!-- Follow Me button at the very bottom -->
+<div class="follow-btn-wrapper">
+  <a href="https://www.instagram.com/schninnaa/" target="_blank">
+    <img src="follow me1.png" alt="Follow Me">
+  </a>
+</div>
+
+<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
+
+<script>
+  // Switch viewers
+  const container1 = document.getElementById('container1');
+  const container2 = document.getElementById('container2');
+  const btn1 = document.getElementById('showViewer1');
+  const btn2 = document.getElementById('showViewer2');
+
+  btn1.onclick = () => {
+    container1.classList.remove('hidden');
+    container2.classList.add('hidden');
+    btn1.classList.add('active');
+    btn2.classList.remove('active');
+  };
+  btn2.onclick = () => {
+    container2.classList.remove('hidden');
+    container1.classList.add('hidden');
+    btn2.classList.add('active');
+    btn1.classList.remove('active');
+  };
+
+  // Button sound and description toggle
+  function toggleDescription(descId, btnId) {
+    const desc = document.getElementById(descId);
+    const btn = document.getElementById(btnId);
+    const sound = document.getElementById('clickSound');
+    if (sound) {
+      const playPromise = sound.play();
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {}).catch(error => console.log('Sound blocked:', error));
+      }
+    }
+    desc.style.display = 'block';
+    btn.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
