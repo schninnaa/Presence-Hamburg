@@ -104,14 +104,13 @@ model-viewer {
   transform: scale(1.05);
 }
 
-/* --- Main fix: background image fully visible vertically --- */
+/* --- The main background fix --- */
 .viewer-description {
   display: none;
+  position: relative;
   font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 1.13rem;
   color: #222;
-  background: url('ballon click2.png') center center no-repeat;
-  background-size: auto 100%; /* ensures it fits the text height perfectly */
   padding: 60px 30px;
   max-width: 700px;
   line-height: 1.6;
@@ -121,10 +120,27 @@ model-viewer {
   overflow: visible;
 }
 
+/* Background image layer that extends wider than text box */
+.viewer-description::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200%; /* makes it extend past sides */
+  height: 100%;
+  transform: translateX(-50%);
+  background: url('ballon click2.png') center center no-repeat;
+  background-size: auto 100%; /* scale to fit vertically */
+  z-index: -1;
+  pointer-events: none;
+}
+
 @media (max-width: 600px) {
   .viewer-description {
     padding: 50px 18px;
-    background-size: auto 100%;
+  }
+  .viewer-description::before {
+    width: 250%; /* even wider on mobile to prevent cutting */
   }
 }
 </style>
