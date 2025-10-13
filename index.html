@@ -18,6 +18,7 @@
       align-items: center;
       padding: 20px;
     }
+
     .viewer-container {
       width: 100%;
       max-width: 900px;
@@ -28,6 +29,7 @@
       flex-direction: column;
       align-items: center;
     }
+
     model-viewer {
       width: 100%;
       height: 50vw;
@@ -38,6 +40,7 @@
       box-shadow: none;
       transition: width 0.3s, height 0.3s;
     }
+
     .switch-btns {
       margin: 24px 0;
       display: flex;
@@ -46,6 +49,7 @@
       max-width: 700px;
       justify-content: center;
     }
+
     .switch-btn {
       flex: 1 1 0;
       background: none;
@@ -55,6 +59,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .switch-btn .switch-img {
       width: 100%;
       max-width: 210px;
@@ -63,15 +68,37 @@
       aspect-ratio: 1/1;
       object-fit: contain;
     }
+
     .switch-btn.active .switch-img {
       transform: scale(1.2);
       filter: none;
     }
+
     .switch-btn:not(.active) .switch-img {
       filter: grayscale(100%) contrast(1.1);
     }
+
     .hidden {
       display: none;
+    }
+
+    .balloon-button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: transform 0.2s;
+    }
+
+    .balloon-button img {
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+
+    .balloon-button:hover {
+      transform: scale(1.05);
     }
 
     .viewer-description {
@@ -88,23 +115,6 @@
       text-align: left;
       display: none;
       animation: fadeIn 0.4s ease forwards;
-    }
-
-    .balloon-button {
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      margin-top: 16px;
-      transition: transform 0.2s;
-    }
-    .balloon-button img {
-      height: 100px;
-      width: auto;
-      display: block;
-    }
-    .balloon-button:hover {
-      transform: scale(1.05);
     }
 
     @keyframes fadeIn {
@@ -150,11 +160,6 @@
   <button class="balloon-button" id="descBtn1">
     <img src="ballon click.png" alt="Show Description">
   </button>
-  <div class="viewer-description" id="desc1">
-     Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-  </div>
 </div>
 
 <!-- Viewer 2 -->
@@ -174,16 +179,9 @@
   <button class="balloon-button" id="descBtn2">
     <img src="ballon click.png" alt="Show Description">
   </button>
-  <div class="viewer-description" id="desc2">
-    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
-    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
-    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
-  </div>
 </div>
 
-<!-- Add your sound file -->
-<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
-
+<!-- YouTube Video -->
 <div style="margin-top:32px;display:flex;justify-content:center;">
   <iframe width="360" height="640"
     src="https://www.youtube.com/embed/EiTBJ-vXIYY"
@@ -193,6 +191,24 @@
     allowfullscreen>
   </iframe>
 </div>
+
+<!-- Descriptions BELOW video -->
+<div id="descriptions" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+  <div class="viewer-description" id="desc1">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
+  </div>
+
+  <div class="viewer-description" id="desc2">
+    Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
+    On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
+    Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
+  </div>
+</div>
+
+<!-- Sound -->
+<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
 
 <div style="margin:48px 0 12px 0; display:flex; justify-content:center;">
   <a href="https://www.instagram.com/schninnaa/" target="_blank" style="background:none; border:none; padding:0;">
@@ -234,12 +250,16 @@
     container2.classList.add('hidden');
     btn1.classList.add('active');
     btn2.classList.remove('active');
+    document.getElementById('desc1').style.display = 'none';
+    document.getElementById('desc2').style.display = 'none';
   };
   btn2.onclick = () => {
     container2.classList.remove('hidden');
     container1.classList.add('hidden');
     btn2.classList.add('active');
     btn1.classList.remove('active');
+    document.getElementById('desc1').style.display = 'none';
+    document.getElementById('desc2').style.display = 'none';
   };
 
   // Balloon click with sound
@@ -250,10 +270,17 @@
     const desc = document.getElementById(descId);
 
     btn.addEventListener('click', () => {
-      clickSound.currentTime = 0; // rewind if clicked again quickly
-      clickSound.play();
+      try {
+        clickSound.currentTime = 0;
+        clickSound.volume = 1;
+        clickSound.play().catch(err => console.warn('Sound blocked:', err));
+      } catch (e) {
+        console.warn('Audio error:', e);
+      }
+
       desc.style.display = 'block';
       btn.style.display = 'none';
+      window.scrollTo({ top: desc.offsetTop - 80, behavior: 'smooth' });
     });
   }
 
