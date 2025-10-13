@@ -195,11 +195,11 @@ model-viewer {
     width: 100%;
     justify-content: center;
     margin: 0 auto;
-    gap: 12px;
+    gap: 10px;
   }
   .switch-btn .switch-img {
-    width: auto;  /* preserve natural width */
-    height: 44px; /* keep height fixed */
+    width: auto;  
+    height: 36px; /* smaller on mobile */
   }
 }
 </style>
@@ -235,7 +235,7 @@ model-viewer {
   <model-viewer
     id="viewer2"
     src="semesterproject2.2test.glb"
-    ios-src="semesterproject2.2test.udsz"
+    ios-src="semesterproject2.2test.usdz"
     ar
     ar-modes="scene-viewer quick-look webxr"
     camera-controls
@@ -301,14 +301,9 @@ model-viewer {
     const btn = document.getElementById(btnId);
     const sound = document.getElementById('clickSound');
     if (sound) {
-      // Some browsers require play() to be triggered by user interaction
       const playPromise = sound.play();
       if (playPromise !== undefined) {
-        playPromise.then(_ => {
-          // sound started
-        }).catch(error => {
-          console.log('Sound blocked:', error);
-        });
+        playPromise.then(_ => {}).catch(error => console.log('Sound blocked:', error));
       }
     }
     desc.style.display = 'block';
