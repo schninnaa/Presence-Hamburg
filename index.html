@@ -95,7 +95,7 @@ model-viewer {
 }
 
 .description-button img {
-  width: 180px;
+  width: 144px; /* 20% smaller */
   height: auto;
   transition: transform 0.2s;
 }
@@ -104,26 +104,30 @@ model-viewer {
   transform: scale(1.05);
 }
 
+/* --- Description box --- */
 .viewer-description {
   display: none;
   font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 1.13rem;
   color: #222;
-  background: url('ballon click2.png') no-repeat center top;
-  background-size: auto; /* original size, overflow if needed */
-  border-radius: 22px;
-  padding: 70px 28px;
+  background: url('ballon click2.png') no-repeat center center;
+  background-size: 100% auto; /* scale proportionally to fit text vertically */
+  background-repeat: no-repeat;
+  padding: 60px 30px; /* adds breathing room */
   max-width: 700px;
   line-height: 1.6;
   text-align: left;
   width: 100%;
   box-sizing: border-box;
+  background-clip: content-box;
+  background-origin: content-box;
   overflow: visible;
 }
 
 @media (max-width: 600px) {
   .viewer-description {
     padding: 50px 18px;
+    background-size: 120% auto; /* allow more vertical fit on mobile */
   }
 }
 </style>
@@ -200,7 +204,8 @@ model-viewer {
   </a>
 </div>
 
-<audio id="clickSound" src="click-sound.mp3" preload="auto"></audio>
+<!-- Pop sound -->
+<audio id="clickSound" src="pop.mp3" preload="auto"></audio>
 
 <script>
   // Switch viewers
@@ -222,13 +227,15 @@ model-viewer {
     btn1.classList.remove('active');
   };
 
-  // Show description + hide button + play sound
+  // Description toggle with sound
   function toggleDescription(descId, btnId) {
     const desc = document.getElementById(descId);
     const btn = document.getElementById(btnId);
     const sound = document.getElementById('clickSound');
-    sound.currentTime = 0;
-    sound.play();
+    if (sound) {
+      sound.currentTime = 0;
+      sound.play().catch(e => console.log('Sound play blocked:', e));
+    }
     desc.style.display = 'block';
     btn.style.display = 'none';
   }
