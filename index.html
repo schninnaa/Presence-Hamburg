@@ -156,10 +156,6 @@
     autoplay
     alt="3D model">
   </model-viewer>
-
-  <button class="balloon-button" id="descBtn1">
-    <img src="ballon click.png" alt="Show Description">
-  </button>
 </div>
 
 <!-- Viewer 2 -->
@@ -175,10 +171,6 @@
     autoplay
     alt="Second 3D model">
   </model-viewer>
-
-  <button class="balloon-button" id="descBtn2">
-    <img src="ballon click.png" alt="Show Description">
-  </button>
 </div>
 
 <!-- YouTube Video -->
@@ -192,14 +184,22 @@
   </iframe>
 </div>
 
-<!-- Descriptions BELOW video -->
-<div id="descriptions" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+<!-- Buttons + Descriptions BELOW video -->
+<div id="description-section" style="width:100%;display:flex;flex-direction:column;align-items:center;margin-top:24px;">
+  <!-- Model 1 -->
+  <button class="balloon-button" id="descBtn1">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
   <div class="viewer-description" id="desc1">
     Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
     On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
     Here, urban life meets shared experiences – a place that captures the pulse and diversity of Hamburg.
   </div>
 
+  <!-- Model 2 -->
+  <button class="balloon-button hidden" id="descBtn2">
+    <img src="ballon click.png" alt="Show Description">
+  </button>
   <div class="viewer-description" id="desc2">
     Between the Volksparkstadion and the Barclays Arena lies a place where sports, music, and community come together. This open area offers space to meet, move, and enjoy special moments – whether before kickoff, between concerts, or simply while passing through.<br><br>
     On event days, it transforms into a vibrant meeting point for fans and visitors from all over the world. Outside of major events, it becomes a calm, open spot to pause and take in the view of two of Hamburg’s most iconic venues.<br><br>
@@ -244,22 +244,31 @@
   const container2 = document.getElementById('container2');
   const btn1 = document.getElementById('showViewer1');
   const btn2 = document.getElementById('showViewer2');
+  const descBtn1 = document.getElementById('descBtn1');
+  const descBtn2 = document.getElementById('descBtn2');
+  const desc1 = document.getElementById('desc1');
+  const desc2 = document.getElementById('desc2');
 
   btn1.onclick = () => {
     container1.classList.remove('hidden');
     container2.classList.add('hidden');
     btn1.classList.add('active');
     btn2.classList.remove('active');
-    document.getElementById('desc1').style.display = 'none';
-    document.getElementById('desc2').style.display = 'none';
+    descBtn1.classList.remove('hidden');
+    descBtn2.classList.add('hidden');
+    desc1.style.display = 'none';
+    desc2.style.display = 'none';
   };
+
   btn2.onclick = () => {
     container2.classList.remove('hidden');
     container1.classList.add('hidden');
     btn2.classList.add('active');
     btn1.classList.remove('active');
-    document.getElementById('desc1').style.display = 'none';
-    document.getElementById('desc2').style.display = 'none';
+    descBtn2.classList.remove('hidden');
+    descBtn1.classList.add('hidden');
+    desc1.style.display = 'none';
+    desc2.style.display = 'none';
   };
 
   // Balloon click with sound
