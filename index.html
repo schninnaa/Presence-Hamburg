@@ -57,8 +57,8 @@ model-viewer {
 }
 
 .switch-btn .switch-img {
-  width: auto;
-  height: 44px;
+  width: auto;         
+  height: 44px;        
   transition: transform 0.2s, filter 0.2s;
 }
 
@@ -193,14 +193,13 @@ model-viewer {
   }
   .switch-btns {
     width: 100%;
-    justify-content: center; 
+    justify-content: center;
     margin: 0 auto;
     gap: 12px;
   }
   .switch-btn .switch-img {
-    max-width: 45%; /* ensures both buttons fit and stay centered */
-    height: 44px;
-    width: auto;
+    width: auto;  /* preserve natural width */
+    height: 44px; /* keep height fixed */
   }
 }
 </style>
@@ -302,8 +301,15 @@ model-viewer {
     const btn = document.getElementById(btnId);
     const sound = document.getElementById('clickSound');
     if (sound) {
-      sound.currentTime = 0;
-      sound.play().catch(e => console.log('Sound play blocked:', e));
+      // Some browsers require play() to be triggered by user interaction
+      const playPromise = sound.play();
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // sound started
+        }).catch(error => {
+          console.log('Sound blocked:', error);
+        });
+      }
     }
     desc.style.display = 'block';
     btn.style.display = 'none';
