@@ -5,23 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Presence AR</title>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
+body, button, .switch-btn, .description-button {
+  cursor: url('needle.png'), auto; /* custom cursor */
+}
 
 body {
   margin: 0;
-  background: url('asphalt_02.jpg') left top repeat-x;
-  background-size: 100% auto;
+  background: #ffffff; /* white background */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .viewer-container {
   width: 100%;
   max-width: 900px;
-  padding: 0 24px;
+  padding: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,8 +43,6 @@ model-viewer {
   margin: 24px 0;
   display: flex;
   gap: 12px;
-  width: 100%;
-  max-width: 700px;
   justify-content: center;
 }
 
@@ -52,7 +53,7 @@ model-viewer {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: inherit;
 }
 
 .switch-btn .switch-img {
@@ -75,12 +76,12 @@ model-viewer {
   display: none;
 }
 
-/* Description + button below YouTube */
 .description-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: auto;
+  max-width: none;
   margin-top: 32px;
 }
 
@@ -90,12 +91,13 @@ model-viewer {
   padding: 0;
   display: flex;
   justify-content: center;
-  cursor: pointer;
+  cursor: inherit;
   margin-bottom: 16px;
+  margin-top: 60px;
 }
 
 .description-button img {
-  width: 120px; /* smaller */
+  width: 120px;
   height: auto;
   transition: transform 0.2s;
 }
@@ -104,35 +106,46 @@ model-viewer {
   transform: scale(1.05);
 }
 
-/* --- The main background fix --- */
 .viewer-description {
   display: none;
   position: relative;
-  font-family: 'Baloo 2', 'Segoe UI', Arial, Helvetica, sans-serif;
-  font-size: 1.13rem;
+  font-size: 1.2rem;
   color: #222;
   padding: 60px 30px;
-  max-width: 700px;
   line-height: 1.6;
   text-align: left;
-  width: 100%;
+  width: auto;
+  max-width: 700px;
   box-sizing: border-box;
   overflow: visible;
 }
 
-/* Background image layer that extends wider than text box */
 .viewer-description::before {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
-  width: 200%; /* makes it extend past sides */
+  width: 200vw; 
   height: 100%;
   transform: translateX(-50%);
   background: url('ballon click2.png') center center no-repeat;
-  background-size: auto 100%; /* scale to fit vertically */
+  background-size: auto 100%;
   z-index: -1;
   pointer-events: none;
+}
+
+.youtube-wrapper {
+  width: 360px;
+  height: 740px;
+  border-radius: 8% / 5%;
+  overflow: hidden;
+  margin: 32px auto;
+}
+
+.youtube-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 @media (max-width: 600px) {
@@ -140,7 +153,11 @@ model-viewer {
     padding: 50px 18px;
   }
   .viewer-description::before {
-    width: 250%; /* even wider on mobile to prevent cutting */
+    width: 250vw;
+  }
+  .youtube-wrapper {
+    width: 80vw;
+    height: calc(80vw * 1.77);
   }
 }
 </style>
@@ -158,7 +175,6 @@ model-viewer {
   </button>
 </div>
 
-<!-- 3D viewers -->
 <div class="viewer-container" id="container1">
   <model-viewer
     id="viewer"
@@ -187,9 +203,8 @@ model-viewer {
   </model-viewer>
 </div>
 
-<!-- YouTube video -->
-<div style="margin-top:32px;display:flex;justify-content:center;">
-  <iframe width="360" height="640"
+<div class="youtube-wrapper">
+  <iframe 
     src="https://www.youtube.com/embed/EiTBJ-vXIYY"
     title="YouTube Video"
     frameborder="0"
@@ -198,7 +213,6 @@ model-viewer {
   </iframe>
 </div>
 
-<!-- Description below video -->
 <div class="description-wrapper">
   <button class="description-button" id="descBtn" onclick="toggleDescription('desc','descBtn')">
     <img src="ballon click.png" alt="Show Description">
@@ -210,15 +224,13 @@ model-viewer {
   </div>
 </div>
 
-<!-- Instagram -->
 <div style="margin:48px 0 12px 0; display:flex; justify-content:center;">
   <a href="https://www.instagram.com/schninnaa/" target="_blank" style="background:none; border:none; padding:0;">
     <img src="followme.png" alt="Instagram" style="height:240px; width:auto; display:block;">
   </a>
 </div>
 
-<!-- Pop sound -->
-<audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
+<audio id="clickSound" src="pop.mp3" preload="auto"></audio>
 
 <script>
   // Switch viewers
