@@ -161,6 +161,25 @@ model-viewer {
   display: block;
 }
 
+/* Follow Me button at bottom of page */
+.follow-btn-wrapper {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  margin: 0;               /* remove spacing so bottom aligns with page */
+}
+
+.follow-btn-wrapper img {
+  width: 360px;           /* 3x original size */
+  height: auto;
+  display: block;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.follow-btn-wrapper img:hover {
+  transform: scale(1.05);
+}
+
 @media (max-width: 600px) {
   .viewer-description {
     padding: 50px 18px;
@@ -237,9 +256,10 @@ model-viewer {
   </div>
 </div>
 
-<div style="margin:48px 0 12px 0; display:flex; justify-content:center;">
-  <a href="https://www.instagram.com/schninnaa/" target="_blank" style="background:none; border:none; padding:0;">
-    <img src="followme.png" alt="Instagram" style="height:240px; width:auto; display:block;">
+<!-- Follow Me button at the very bottom -->
+<div class="follow-btn-wrapper">
+  <a href="https://www.instagram.com/schninnaa/" target="_blank">
+    <img src="follow me1.png" alt="Follow Me">
   </a>
 </div>
 
