@@ -57,8 +57,8 @@ model-viewer {
 }
 
 .switch-btn .switch-img {
-  width: auto;         /* width adjusts automatically */
-  height: 44px;        /* fixed height */
+  width: auto;
+  height: 44px;
   transition: transform 0.2s, filter 0.2s;
 }
 
@@ -163,14 +163,14 @@ model-viewer {
 /* Follow Me button at bottom with larger top margin */
 .follow-btn-wrapper {
   display: flex;
-  justify-content: center; /* center horizontally */
-  margin: 120px 0 0 0;     /* bigger top margin, bottom 0 */
+  justify-content: center; 
+  margin: 120px 0 0 0;     
 }
 
 .follow-btn-wrapper img {
-  width: 360px;           /* 3x original size */
+  width: 360px;           
   height: auto;
-  display: block;          /* removes inline spacing */
+  display: block;         
   cursor: pointer;
   object-fit: contain;
 }
@@ -192,9 +192,15 @@ model-viewer {
     height: calc(80vw * 1.77);
   }
   .switch-btns {
-    justify-content: center;  /* center on mobile */
-    gap: 8px;                 /* smaller gap on mobile */
     width: 100%;
+    justify-content: center; 
+    margin: 0 auto;
+    gap: 12px;
+  }
+  .switch-btn .switch-img {
+    max-width: 45%; /* ensures both buttons fit and stay centered */
+    height: 44px;
+    width: auto;
   }
 }
 </style>
