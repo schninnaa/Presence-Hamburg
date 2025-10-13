@@ -13,12 +13,12 @@ body, button, .switch-btn, .description-button {
 }
 
 body {
-  margin: 0;
+  margin: 0;          /* remove default body margin */
+  padding: 0;         /* remove default body padding */
   background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -161,17 +161,17 @@ model-viewer {
   display: block;
 }
 
-/* Follow Me button at bottom of page */
+/* Follow Me button at bottom with larger top margin */
 .follow-btn-wrapper {
   display: flex;
   justify-content: center; /* center horizontally */
-  margin: 0;               /* remove spacing so bottom aligns with page */
+  margin: 120px 0 0 0;     /* bigger top margin, bottom 0 */
 }
 
 .follow-btn-wrapper img {
   width: 360px;           /* 3x original size */
   height: auto;
-  display: block;
+  display: block;          /* removes inline spacing */
   cursor: pointer;
   object-fit: contain;
 }
