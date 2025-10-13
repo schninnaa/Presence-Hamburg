@@ -7,13 +7,14 @@
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* Custom cursor */
 body, button, .switch-btn, .description-button {
-  cursor: url('needle.png'), auto; /* custom cursor */
+  cursor: url('needle.png') 16 16, auto; /* 16 16 = hotspot */
 }
 
 body {
   margin: 0;
-  background: #ffffff; /* white background */
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,6 +77,7 @@ model-viewer {
   display: none;
 }
 
+/* Description + button below YouTube */
 .description-wrapper {
   display: flex;
   flex-direction: column;
@@ -134,6 +136,7 @@ model-viewer {
   pointer-events: none;
 }
 
+/* Oval YouTube wrapper */
 .youtube-wrapper {
   width: 360px;
   height: 740px;
