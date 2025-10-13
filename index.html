@@ -13,8 +13,8 @@ body, button, .switch-btn, .description-button {
 }
 
 body {
-  margin: 0;          /* remove default body margin */
-  padding: 0;         /* remove default body padding */
+  margin: 0;          
+  padding: 0;         
   background: #ffffff;
   display: flex;
   flex-direction: column;
@@ -57,9 +57,8 @@ model-viewer {
 }
 
 .switch-btn .switch-img {
-  width: 100%;
-  max-width: 210px;
-  height: auto;
+  width: auto;         /* width adjusts automatically */
+  height: 44px;        /* fixed height */
   transition: transform 0.2s, filter 0.2s;
 }
 
@@ -180,6 +179,7 @@ model-viewer {
   transform: scale(1.05);
 }
 
+/* Mobile adjustments */
 @media (max-width: 600px) {
   .viewer-description {
     padding: 50px 18px;
@@ -191,6 +191,11 @@ model-viewer {
     width: 80vw;
     height: calc(80vw * 1.77);
   }
+  .switch-btns {
+    justify-content: center;  /* center on mobile */
+    gap: 8px;                 /* smaller gap on mobile */
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -200,10 +205,10 @@ model-viewer {
 
 <div class="switch-btns">
   <button id="showViewer1" class="switch-btn active">
-    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img" style="height:44px;">
+    <img src="ballon schild 1 fertig.png" alt="Model 1" class="switch-img">
   </button>
   <button id="showViewer2" class="switch-btn">
-    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img" style="height:44px;">
+    <img src="ballon schild 2 fertig.png" alt="Model 2" class="switch-img">
   </button>
 </div>
 
@@ -224,8 +229,8 @@ model-viewer {
 <div class="viewer-container hidden" id="container2">
   <model-viewer
     id="viewer2"
-    src="semesterproject 2.2test.glb"
-    ios-src="semesterproject2.2test.usdz"
+    src="semesterproject2.2test.glb"
+    ios-src="semesterproject2.2test.udsz"
     ar
     ar-modes="scene-viewer quick-look webxr"
     camera-controls
