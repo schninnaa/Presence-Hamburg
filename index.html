@@ -9,7 +9,7 @@
 <style>
 /* Custom cursor */
 body, button, .switch-btn, .description-button {
-  cursor: url('needle.png') 16 16, auto; /* 16 16 = hotspot */
+  cursor: url('needle.png') 16 16, auto;
 }
 
 body {
@@ -25,7 +25,6 @@ body {
 .viewer-container {
   width: 100%;
   max-width: 900px;
-  padding: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,6 +95,7 @@ model-viewer {
   cursor: inherit;
   margin-bottom: 16px;
   margin-top: 60px;
+  animation: balloonFloat 6s ease-in-out infinite;
 }
 
 .description-button img {
@@ -106,6 +106,16 @@ model-viewer {
 
 .description-button img:hover {
   transform: scale(1.05);
+}
+
+/* Balloon floating effect */
+@keyframes balloonFloat {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  20% { transform: translate(3px, -4px) rotate(-2deg); }
+  40% { transform: translate(-2px, 3px) rotate(1deg); }
+  60% { transform: translate(2px, -3px) rotate(0deg); }
+  80% { transform: translate(-3px, 2px) rotate(2deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
 }
 
 .viewer-description {
@@ -138,7 +148,7 @@ model-viewer {
 
 /* Oval YouTube wrapper */
 .youtube-wrapper {
-  width: 360px;
+  width: 460px;
   height: 740px;
   border-radius: 8% / 5%;
   overflow: hidden;
