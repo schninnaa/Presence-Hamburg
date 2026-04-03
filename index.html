@@ -13,7 +13,6 @@
 
 /* ----------------------- */
 /* GLOBAL */
-/* ----------------------- */
 body{
   margin:0;
   padding:0;
@@ -28,7 +27,6 @@ body{
 
 /* ----------------------- */
 /* PARTICLE BACKGROUND */
-/* ----------------------- */
 #particleCanvas{
   position:fixed;
   top:0;
@@ -305,7 +303,6 @@ function toggleDescription(descId,btnId){
 
 /* ----------------------- */
 /* NATURAL CROWD-LIKE PARTICLES ----------------------- */
-
 const canvas=document.getElementById("particleCanvas");
 const ctx=canvas.getContext("2d");
 let particles=[];
@@ -319,10 +316,10 @@ window.addEventListener("resize",resize);
 resize();
 
 const colors = [
-  "rgba(255, 230, 180, 0.5)", // yellow
-  "rgba(180, 255, 200,0.5)",  // green
-  "rgba(200, 210, 255,0.5)",  // blue
-  "rgba(255, 200, 220,0.5)"   // pink
+  "rgba(255, 230, 180, 0.5)",
+  "rgba(180, 255, 200,0.5)",
+  "rgba(200, 210, 255,0.5)",
+  "rgba(255, 200, 220,0.5)"
 ];
 
 class Particle{
@@ -339,7 +336,7 @@ class Particle{
   }
 
   move(){
-    // slowly drift
+    // always drift
     this.x += this.vx;
     this.y += this.vy;
 
@@ -366,13 +363,13 @@ class Particle{
       this.size += (this.baseSize - this.size)*0.05;
     }
 
-    // move with mouse only if close
+    // repel from mouse if close
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist<100){ // only closest particles follow mouse
-      this.x += dx*0.005;
-      this.y += dy*0.005;
+    if(dist<100){ // only closest particles
+      this.x -= dx*0.01; // move away
+      this.y -= dy*0.01;
     }
   }
 
@@ -384,7 +381,7 @@ class Particle{
   }
 }
 
-for(let i=0;i<220;i++){ // more particles
+for(let i=0;i<220;i++){
   particles.push(new Particle());
 }
 
