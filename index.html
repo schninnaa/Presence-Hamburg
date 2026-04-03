@@ -1,217 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Presence AR</title>
+
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* Custom cursor */
-body, button, .switch-btn, .description-button {
-  cursor: url('needle.png') 16 16, auto;
+/* ----------------------- */
+/* GLOBAL */
+/* ----------------------- */
+
+body{
+margin:0;
+padding:0;
+background:#ffffff;
+font-family:'Roboto',sans-serif;
+display:flex;
+flex-direction:column;
+align-items:center;
+position:relative;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
+/* ----------------------- */
+/* PARTICLE BACKGROUND */
+/* ----------------------- */
+
+#particleCanvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+pointer-events:none;
 }
 
-/* Particle background */
-#particleCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  pointer-events: none;
+/* ----------------------- */
+/* CUSTOM CURSOR */
+/* ----------------------- */
+
+body,button,.switch-btn,.description-button{
+cursor:url('needle.png') 16 16,auto;
 }
 
-.viewer-container {
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 32px;
+/* ----------------------- */
+/* VIEWERS */
+/* ----------------------- */
+
+.viewer-container{
+width:100%;
+max-width:900px;
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:32px;
+position:relative;
+z-index:2;
 }
 
-model-viewer {
-  width: 100%;
-  height: 50vw;
-  max-height: 600px;
-  min-height: 300px;
-  background: none;
+model-viewer{
+width:100%;
+height:50vw;
+max-height:600px;
+min-height:300px;
+background:none;
 }
 
-.switch-btns {
-  margin: 24px 0;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
+/* ----------------------- */
+/* SWITCH BUTTONS */
+/* ----------------------- */
+
+.switch-btns{
+margin:24px 0;
+display:flex;
+gap:12px;
+justify-content:center;
+z-index:2;
 }
 
-.switch-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: inherit;
+.switch-btn{
+background:none;
+border:none;
+padding:0;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:inherit;
 }
 
-.switch-btn .switch-img {
-  width: auto;
-  height: 44px;
-  transition: transform 0.2s, filter 0.2s;
+.switch-img{
+height:44px;
+transition:transform .2s,filter .2s;
 }
 
-.switch-btn.active .switch-img {
-  transform: scale(1.2);
-  filter: none;
+.switch-btn.active .switch-img{
+transform:scale(1.2);
+filter:none;
 }
 
-.switch-btn:not(.active) .switch-img {
-  filter: grayscale(100%) contrast(1.1);
+.switch-btn:not(.active) .switch-img{
+filter:grayscale(100%) contrast(1.1);
 }
 
-.hidden {
-  display: none;
+.hidden{
+display:none;
 }
 
-/* Description + button */
-.description-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: auto;
-  margin-top: 32px;
+/* ----------------------- */
+/* DESCRIPTION */
+/* ----------------------- */
+
+.description-wrapper{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-top:32px;
+z-index:2;
 }
 
-.description-button {
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  cursor: inherit;
-  margin-bottom: 16px;
-  margin-top: 60px;
-  animation: balloonFloat 6s ease-in-out infinite;
+.description-button{
+background:none;
+border:none;
+margin-top:60px;
+animation:balloonFloat 6s ease-in-out infinite;
 }
 
-.description-button img {
-  width: 120px;
-  height: auto;
-  transition: transform 0.2s;
+.description-button img{
+width:120px;
+transition:transform .2s;
 }
 
-.description-button img:hover {
-  transform: scale(1.05);
+.description-button img:hover{
+transform:scale(1.05);
 }
 
-/* Balloon floating animation */
-@keyframes balloonFloat {
-  0% { transform: translate(0px, 0px) rotate(0deg); }
-  20% { transform: translate(3px, -4px) rotate(-2deg); }
-  40% { transform: translate(-2px, 3px) rotate(1deg); }
-  60% { transform: translate(2px, -3px) rotate(0deg); }
-  80% { transform: translate(-3px, 2px) rotate(2deg); }
-  100% { transform: translate(0px, 0px) rotate(0deg); }
+@keyframes balloonFloat{
+
+0%{transform:translate(0,0) rotate(0);}
+20%{transform:translate(3px,-4px) rotate(-2deg);}
+40%{transform:translate(-2px,3px) rotate(1deg);}
+60%{transform:translate(2px,-3px);}
+80%{transform:translate(-3px,2px) rotate(2deg);}
+100%{transform:translate(0,0);}
+
 }
 
-.viewer-description {
-  display: none;
-  position: relative;
-  font-size: 1.2rem;
-  color: #222;
-  padding: 60px 30px;
-  line-height: 1.6;
-  text-align: left;
-  max-width: 700px;
-  box-sizing: border-box;
+.viewer-description{
+
+display:none;
+font-size:1.2rem;
+color:#222;
+padding:60px 30px;
+line-height:1.6;
+max-width:700px;
+text-align:left;
+position:relative;
+
 }
 
-.viewer-description::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 200vw;
-  height: 100%;
-  transform: translateX(-50%);
-  background: url('ballon click2.png') center center no-repeat;
-  background-size: auto 100%;
-  z-index: -1;
-  pointer-events: none;
+.viewer-description::before{
+
+content:"";
+position:absolute;
+top:0;
+left:50%;
+width:200vw;
+height:100%;
+transform:translateX(-50%);
+background:url('ballon click2.png') center center no-repeat;
+background-size:auto 100%;
+z-index:-1;
+
 }
 
-/* Video wrapper */
-.video-wrapper {
-  width: 460px;
-  height: 740px;
-  border-radius: 8% / 5%;
-  overflow: hidden;
-  margin: 32px auto;
+/* ----------------------- */
+/* VIDEO */
+/* ----------------------- */
+
+.video-wrapper{
+
+width:460px;
+height:740px;
+border-radius:8% / 5%;
+overflow:hidden;
+margin:32px auto;
+z-index:2;
+
 }
 
-.video-wrapper video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.video-wrapper video{
+
+width:100%;
+height:100%;
+object-fit:cover;
+
 }
 
-/* Follow button */
-.follow-btn-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 120px 0 0 0;
+/* ----------------------- */
+/* FOLLOW */
+/* ----------------------- */
+
+.follow-btn-wrapper{
+
+display:flex;
+justify-content:center;
+margin:120px 0 0 0;
+z-index:2;
+
 }
 
-.follow-btn-wrapper img {
-  width: 360px;
-  cursor: pointer;
+.follow-btn-wrapper img{
+
+width:360px;
+cursor:pointer;
+
 }
 
-.follow-btn-wrapper img:hover {
-  transform: scale(1.05);
+.follow-btn-wrapper img:hover{
+
+transform:scale(1.05);
+
 }
 
-/* Mobile */
-@media (max-width: 600px) {
+/* ----------------------- */
+/* MOBILE */
+/* ----------------------- */
 
-  .viewer-description {
-    padding: 50px 18px;
-  }
+@media (max-width:600px){
 
-  .viewer-description::before {
-    width: 250vw;
-  }
+.video-wrapper{
+width:80vw;
+height:calc(80vw*1.77);
+}
 
-  .video-wrapper {
-    width: 80vw;
-    height: calc(80vw * 1.77);
-  }
-
-  .switch-btns {
-    width: 100%;
-    justify-content: center;
-    margin: 0 auto;
-    gap: 10px;
-  }
-
-  .switch-btn .switch-img {
-    height: 36px;
-  }
+.switch-img{
+height:36px;
+}
 
 }
 
@@ -222,46 +251,56 @@ model-viewer {
 
 <canvas id="particleCanvas"></canvas>
 
-<img src="title.png" alt="Titel" style="display:block;max-width:640px;width:100%;height:auto;margin:48px 0 35px 0;">
+<img src="title.png" style="max-width:640px;width:100%;margin:48px 0 35px 0;">
 
 <div class="switch-btns">
-  <button id="showViewer1" class="switch-btn active">
-    <img src="ballon schild 1 fertig.png" class="switch-img">
-  </button>
 
-  <button id="showViewer2" class="switch-btn">
-    <img src="ballon schild 2 fertig.png" class="switch-img">
-  </button>
+<button id="showViewer1" class="switch-btn active">
+<img src="ballon schild 1 fertig.png" class="switch-img">
+</button>
+
+<button id="showViewer2" class="switch-btn">
+<img src="ballon schild 2 fertig.png" class="switch-img">
+</button>
+
 </div>
 
 <div class="viewer-container" id="container1">
-  <model-viewer
-    src="semesterproject2.glb"
-    ios-src="semesterproject2.usdz"
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    camera-controls
-    auto-rotate
-    autoplay>
-  </model-viewer>
+
+<model-viewer
+src="semesterproject2.glb"
+ios-src="semesterproject2.usdz"
+ar
+ar-modes="scene-viewer quick-look webxr"
+camera-controls
+auto-rotate
+autoplay>
+
+</model-viewer>
+
 </div>
 
 <div class="viewer-container hidden" id="container2">
-  <model-viewer
-    src="semesterproject2.2test.glb"
-    ios-src="semesterproject2.2test.usdz"
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    camera-controls
-    auto-rotate
-    autoplay>
-  </model-viewer>
+
+<model-viewer
+src="semesterproject2.2test.glb"
+ios-src="semesterproject2.2test.usdz"
+ar
+ar-modes="scene-viewer quick-look webxr"
+camera-controls
+auto-rotate
+autoplay>
+
+</model-viewer>
+
 </div>
 
 <div class="video-wrapper">
-  <video autoplay loop muted playsinline>
-    <source src="copy_A128BA42-33FD-4D12-9A52-0FF0B9A483A0 (1).mp4" type="video/mp4">
-  </video>
+
+<video autoplay loop muted playsinline>
+<source src="copy_A128BA42-33FD-4D12-9A52-0FF0B9A483A0 (1).mp4" type="video/mp4">
+</video>
+
 </div>
 
 <div class="description-wrapper">
@@ -272,13 +311,14 @@ model-viewer {
 
 <div class="viewer-description" id="desc">
 
+
 This digital installation explores the transformation of a public space through human presence, using the roundabout area between the Volksparkstadion and Barclays Arena in Hamburg
 as it’s prime example: a place that comes alive only when people gather for concerts or football matches. 
 When the crowd leaves, the space turns quiet and grey, stripped of it's energy and color. Through AR, this project visualizes how the atmosphere of a place depends on human presence,
 and how emptiness can reveal the contrast within a city that constantly moves between excitement and stillness.
 
-
 </div>
+
 </div>
 
 <div class="follow-btn-wrapper">
@@ -291,95 +331,88 @@ and how emptiness can reveal the contrast within a city that constantly moves be
 
 <script>
 
-/* SWITCH MODELS */
+/* MODEL SWITCH */
 
-const container1 = document.getElementById('container1');
-const container2 = document.getElementById('container2');
-const btn1 = document.getElementById('showViewer1');
-const btn2 = document.getElementById('showViewer2');
+const container1=document.getElementById('container1');
+const container2=document.getElementById('container2');
+const btn1=document.getElementById('showViewer1');
+const btn2=document.getElementById('showViewer2');
 
-btn1.onclick = () => {
+btn1.onclick=()=>{
 container1.classList.remove('hidden');
 container2.classList.add('hidden');
 btn1.classList.add('active');
 btn2.classList.remove('active');
 };
 
-btn2.onclick = () => {
+btn2.onclick=()=>{
 container2.classList.remove('hidden');
 container1.classList.add('hidden');
 btn2.classList.add('active');
 btn1.classList.remove('active');
 };
 
-/* DESCRIPTION BUTTON */
+/* DESCRIPTION */
 
-function toggleDescription(descId, btnId) {
+function toggleDescription(descId,btnId){
 
-const desc = document.getElementById(descId);
-const btn = document.getElementById(btnId);
-const sound = document.getElementById('clickSound');
-
-if (sound) {
-const playPromise = sound.play();
-if (playPromise !== undefined) {
-playPromise.catch(error => console.log('Sound blocked:', error));
-}
-}
-
-desc.style.display = 'block';
-btn.style.display = 'none';
+document.getElementById(descId).style.display='block';
+document.getElementById(btnId).style.display='none';
 
 }
 
-/* PARTICLE BACKGROUND */
+/* PARTICLES */
 
-const canvas = document.getElementById("particleCanvas");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("particleCanvas");
+const ctx=canvas.getContext("2d");
 
-let particles = [];
-let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
+let particles=[];
+let mouse={x:0,y:0};
 
-function resizeCanvas(){
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize(){
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
 }
 
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+window.addEventListener("resize",resize);
+resize();
 
 class Particle{
 
 constructor(){
 
-this.x = Math.random()*canvas.width;
-this.y = Math.random()*canvas.height;
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
 
-this.vx = (Math.random()-0.5)*0.15;
-this.vy = (Math.random()-0.5)*0.15;
+this.vx=(Math.random()-0.5)*0.25;
+this.vy=(Math.random()-0.5)*0.25;
 
-this.size = Math.random()*2 + 0.5;
+this.size=Math.random()*2+1;
 
 }
 
 move(){
 
-this.x += this.vx;
-this.y += this.vy;
+this.x+=this.vx;
+this.y+=this.vy;
 
-const dx = this.x - mouse.x;
-const dy = this.y - mouse.y;
-const dist = Math.sqrt(dx*dx + dy*dy);
+let dx=this.x-mouse.x;
+let dy=this.y-mouse.y;
+let dist=Math.sqrt(dx*dx+dy*dy);
 
-if(dist < 120){
-this.x += dx*0.002;
-this.y += dy*0.002;
+if(dist<140){
+
+this.x+=dx*0.01;
+this.y+=dy*0.01;
+
 }
 
-if(this.x > canvas.width) this.x = 0;
-if(this.x < 0) this.x = canvas.width;
-if(this.y > canvas.height) this.y = 0;
-if(this.y < 0) this.y = canvas.height;
+if(this.x>canvas.width)this.x=0;
+if(this.x<0)this.x=canvas.width;
+if(this.y>canvas.height)this.y=0;
+if(this.y<0)this.y=canvas.height;
 
 }
 
@@ -387,33 +420,27 @@ draw(){
 
 ctx.beginPath();
 ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-ctx.fillStyle = "rgba(120,120,120,0.04)";
+ctx.fillStyle="rgba(0,0,0,0.12)";
 ctx.fill();
 
 }
 
 }
 
-function initParticles(){
-
-particles = [];
-
-for(let i=0;i<60;i++){
+for(let i=0;i<80;i++){
 
 particles.push(new Particle());
 
 }
 
-}
+window.addEventListener("mousemove",e=>{
 
-window.addEventListener("mousemove", e=>{
-
-mouse.x = e.clientX;
-mouse.y = e.clientY;
+mouse.x=e.clientX;
+mouse.y=e.clientY;
 
 });
 
-function animateParticles(){
+function animate(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -422,12 +449,11 @@ p.move();
 p.draw();
 });
 
-requestAnimationFrame(animateParticles);
+requestAnimationFrame(animate);
 
 }
 
-initParticles();
-animateParticles();
+animate();
 
 </script>
 
