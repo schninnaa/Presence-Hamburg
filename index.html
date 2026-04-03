@@ -197,6 +197,29 @@ model-viewer{
 }
 
 /* ----------------------- */
+/* PARTICLE CONTROL BUTTONS */
+.particle-btns{
+  display:flex;
+  gap:12px;
+  margin:16px 0;
+  z-index:2;
+}
+
+.particle-btns button{
+  padding:8px 14px;
+  font-size:16px;
+  cursor:pointer;
+  border-radius:6px;
+  border:none;
+  background:#eee;
+  transition:background 0.2s;
+}
+
+.particle-btns button:hover{
+  background:#ddd;
+}
+
+/* ----------------------- */
 /* MOBILE */
 @media (max-width:600px){
   .video-wrapper{
@@ -224,6 +247,11 @@ model-viewer{
   <button id="showViewer2" class="switch-btn">
     <img src="ballon schild 2 fertig.png" class="switch-img">
   </button>
+</div>
+
+<div class="particle-btns">
+  <button id="fadeBtn">Fade Crowd</button>
+  <button id="bloomBtn">Bloom Crowd</button>
 </div>
 
 <div class="viewer-container" id="container1">
@@ -257,14 +285,14 @@ model-viewer{
 </div>
 
 <div class="description-wrapper">
-  <button class="description-button" id="descBtn" onclick="toggleDescription('desc','descBtn')">
+  <button class="description-button" id="descBtn">
     <img src="ballon click.png">
   </button>
   <div class="viewer-description" id="desc">
     
 This digital installation explores the transformation of a public space through human presence, using the roundabout area between the Volksparkstadion and Barclays Arena in Hamburg
 as it’s prime example: a place that comes alive only when people gather for concerts or football matches. 
-When the crowd leaves, the space turns quiet and grey, stripped of it's energy and color. Through AR, this project visualizes how the atmosphere of a place depends on human presence,
+When the crowd leaves, the space turns quiet and grey, stripped of its energy and color. Through AR, this project visualizes how the atmosphere of a place depends on human presence,
 and how emptiness can reveal the contrast within a city that constantly moves between excitement and stillness.
 
   </div>
@@ -300,20 +328,15 @@ btn2.onclick=()=>{
   btn1.classList.remove('active');
 };
 
-/* DESCRIPTION */
-function toggleDescription(descId,btnId){
-  document.getElementById(descId).style.display='block';
-  document.getElementById(btnId).style.display='none';
-}
-
-/* ----------------------- */
-/* BALLOON POP SOUND */
+/* DESCRIPTION AND SOUND */
 const clickSound = document.getElementById('clickSound');
 const descBtn = document.getElementById('descBtn');
 
 descBtn.addEventListener('click', () => {
-  clickSound.currentTime = 0; // restart if clicked multiple times
-  clickSound.play().catch(()=>{}); // prevent errors if browser blocks autoplay
+  clickSound.currentTime = 0;
+  clickSound.play().catch(()=>{});
+  document.getElementById('desc').style.display='block';
+  descBtn.style.display='none';
 });
 
 /* ----------------------- */
@@ -322,6 +345,7 @@ const canvas=document.getElementById("particleCanvas");
 const ctx=canvas.getContext("2d");
 let particles=[];
 let mouse={x:0,y:0};
+let particleOpacity = 1; // controls global fade
 
 function resize(){
   canvas.width=window.innerWidth;
@@ -343,40 +367,36 @@ class Particle{
     this.y = Math.random()*canvas.height;
     this.size = Math.random()*3+1;
     this.baseSize = this.size;
-
-    // Keep speed magnitude constant
     const angle = Math.random()*Math.PI*2;
-    const speed = 0.134; // base speed
+    const speed = 0.034;
     this.vx = Math.cos(angle)*speed;
     this.vy = Math.sin(angle)*speed;
-
     this.color = colors[Math.floor(Math.random()*colors.length)];
     this.changeTime = Math.random()*7000;
     this.pulseTime = Math.random()*3000;
   }
 
   move(){
-    // always drift
     this.x += this.vx;
     this.y += this.vy;
 
-    // wrap around
+    // wrap
     if(this.x>canvas.width) this.x=0;
     if(this.x<0) this.x=canvas.width;
     if(this.y>canvas.height) this.y=0;
     if(this.y<0) this.y=canvas.height;
 
-    // small random direction change without changing speed magnitude
+    // slight direction change
     this.changeTime += 16;
     if(this.changeTime > 5000 + Math.random()*5000){
-      const angle = Math.atan2(this.vy,this.vx) + (Math.random()-0.5)*0.4; // slight turn
+      const angle = Math.atan2(this.vy,this.vx) + (Math.random()-0.5)*0.4;
       const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
       this.vx = Math.cos(angle)*speed;
       this.vy = Math.sin(angle)*speed;
       this.changeTime = 0;
     }
 
-    // pulse size slightly
+    // pulse size
     this.pulseTime += 16;
     if(this.pulseTime > 2000 + Math.random()*2000){
       this.size = this.baseSize*(0.98 + Math.random()*0.04);
@@ -385,12 +405,12 @@ class Particle{
       this.size += (this.baseSize - this.size)*0.05;
     }
 
-    // repel from mouse if close
+    // repel from mouse
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist<100){ // only closest particles
-      this.x -= dx*0.01; // move away
+    if(dist<100){
+      this.x -= dx*0.01;
       this.y -= dy*0.01;
     }
   }
@@ -398,7 +418,7 @@ class Particle{
   draw(){
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.color.replace(/0\.6\)/, `${0.6*particleOpacity})`);
     ctx.fill();
   }
 }
@@ -412,6 +432,34 @@ window.addEventListener("mousemove",e=>{
   mouse.y=e.clientY;
 });
 
+// -----------------------
+// Fade and Bloom
+const fadeBtn = document.getElementById('fadeBtn');
+const bloomBtn = document.getElementById('bloomBtn');
+
+fadeBtn.addEventListener('click', ()=>{
+  let target = 0;
+  const fadeAnim = setInterval(()=>{
+    particleOpacity -= 0.02;
+    if(particleOpacity <= target){
+      particleOpacity = target;
+      clearInterval(fadeAnim);
+    }
+  },16);
+});
+
+bloomBtn.addEventListener('click', ()=>{
+  let target = 1;
+  const bloomAnim = setInterval(()=>{
+    particleOpacity += 0.02;
+    if(particleOpacity >= target){
+      particleOpacity = target;
+      clearInterval(bloomAnim);
+    }
+  },16);
+});
+
+// -----------------------
 function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{
