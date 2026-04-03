@@ -261,7 +261,12 @@ model-viewer{
     <img src="ballon click.png">
   </button>
   <div class="viewer-description" id="desc">
-    This digital installation explores the transformation of a public space through human presence...
+    
+This digital installation explores the transformation of a public space through human presence, using the roundabout area between the Volksparkstadion and Barclays Arena in Hamburg
+as it’s prime example: a place that comes alive only when people gather for concerts or football matches. 
+When the crowd leaves, the space turns quiet and grey, stripped of it's energy and color. Through AR, this project visualizes how the atmosphere of a place depends on human presence,
+and how emptiness can reveal the contrast within a city that constantly moves between excitement and stillness.
+
   </div>
 </div>
 
@@ -316,10 +321,10 @@ window.addEventListener("resize",resize);
 resize();
 
 const colors = [
-  "rgba(255, 230, 180, 0.5)",
-  "rgba(180, 255, 200,0.5)",
-  "rgba(200, 210, 255,0.5)",
-  "rgba(255, 200, 220,0.5)"
+  "rgba(255, 230, 180, 0.6)",
+  "rgba(180, 255, 200,0.6)",
+  "rgba(200, 210, 255,0.6)",
+  "rgba(255, 200, 220,0.6)"
 ];
 
 class Particle{
@@ -328,7 +333,7 @@ class Particle{
     this.y = Math.random()*canvas.height;
     this.size = Math.random()*3+1;
     this.baseSize = this.size;
-    this.vx = (Math.random()-0.5)*0.334; // 7% faster
+    this.vx = (Math.random()-0.5)*0.534; // 7% faster
     this.vy = (Math.random()-0.5)*0.334;
     this.color = colors[Math.floor(Math.random()*colors.length)];
     this.changeTime = Math.random()*7000; // less frequent direction change
