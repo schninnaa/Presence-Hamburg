@@ -197,29 +197,6 @@ model-viewer{
 }
 
 /* ----------------------- */
-/* PARTICLE CONTROL BUTTONS */
-.particle-btns{
-  display:flex;
-  gap:12px;
-  margin:16px 0;
-  z-index:2;
-}
-
-.particle-btns button{
-  padding:8px 14px;
-  font-size:16px;
-  cursor:pointer;
-  border-radius:6px;
-  border:none;
-  background:#eee;
-  transition:background 0.2s;
-}
-
-.particle-btns button:hover{
-  background:#ddd;
-}
-
-/* ----------------------- */
 /* MOBILE */
 @media (max-width:600px){
   .video-wrapper{
@@ -247,11 +224,6 @@ model-viewer{
   <button id="showViewer2" class="switch-btn">
     <img src="ballon schild 2 fertig.png" class="switch-img">
   </button>
-</div>
-
-<div class="particle-btns">
-  <button id="fadeBtn">Fade Crowd</button>
-  <button id="bloomBtn">Bloom Crowd</button>
 </div>
 
 <div class="viewer-container" id="container1">
@@ -308,44 +280,18 @@ and how emptiness can reveal the contrast within a city that constantly moves be
 
 <script>
 
-/* MODEL SWITCH */
+/* MODEL SWITCH AND PARTICLE FADE/REAPPEAR */
 const container1=document.getElementById('container1');
 const container2=document.getElementById('container2');
-const btn1=document.getElementById('showViewer1');
-const btn2=document.getElementById('showViewer2');
+const btn1=document.getElementById('showViewer1'); // left → bloom
+const btn2=document.getElementById('showViewer2'); // right → fade
 
-btn1.onclick=()=>{
-  container1.classList.remove('hidden');
-  container2.classList.add('hidden');
-  btn1.classList.add('active');
-  btn2.classList.remove('active');
-};
-
-btn2.onclick=()=>{
-  container2.classList.remove('hidden');
-  container1.classList.add('hidden');
-  btn2.classList.add('active');
-  btn1.classList.remove('active');
-};
-
-/* DESCRIPTION AND SOUND */
-const clickSound = document.getElementById('clickSound');
-const descBtn = document.getElementById('descBtn');
-
-descBtn.addEventListener('click', () => {
-  clickSound.currentTime = 0;
-  clickSound.play().catch(()=>{});
-  document.getElementById('desc').style.display='block';
-  descBtn.style.display='none';
-});
-
-/* ----------------------- */
-/* NATURAL CROWD-LIKE PARTICLES */
+/* PARTICLES */
 const canvas=document.getElementById("particleCanvas");
 const ctx=canvas.getContext("2d");
 let particles=[];
 let mouse={x:0,y:0};
-let particleOpacity = 1; // controls global fade
+let particleOpacity = 1; // global opacity
 
 function resize(){
   canvas.width=window.innerWidth;
@@ -380,13 +326,11 @@ class Particle{
     this.x += this.vx;
     this.y += this.vy;
 
-    // wrap
     if(this.x>canvas.width) this.x=0;
     if(this.x<0) this.x=canvas.width;
     if(this.y>canvas.height) this.y=0;
     if(this.y<0) this.y=canvas.height;
 
-    // slight direction change
     this.changeTime += 16;
     if(this.changeTime > 5000 + Math.random()*5000){
       const angle = Math.atan2(this.vy,this.vx) + (Math.random()-0.5)*0.4;
@@ -396,7 +340,6 @@ class Particle{
       this.changeTime = 0;
     }
 
-    // pulse size
     this.pulseTime += 16;
     if(this.pulseTime > 2000 + Math.random()*2000){
       this.size = this.baseSize*(0.98 + Math.random()*0.04);
@@ -405,7 +348,6 @@ class Particle{
       this.size += (this.baseSize - this.size)*0.05;
     }
 
-    // repel from mouse
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -432,34 +374,6 @@ window.addEventListener("mousemove",e=>{
   mouse.y=e.clientY;
 });
 
-// -----------------------
-// Fade and Bloom
-const fadeBtn = document.getElementById('fadeBtn');
-const bloomBtn = document.getElementById('bloomBtn');
-
-fadeBtn.addEventListener('click', ()=>{
-  let target = 0;
-  const fadeAnim = setInterval(()=>{
-    particleOpacity -= 0.02;
-    if(particleOpacity <= target){
-      particleOpacity = target;
-      clearInterval(fadeAnim);
-    }
-  },16);
-});
-
-bloomBtn.addEventListener('click', ()=>{
-  let target = 1;
-  const bloomAnim = setInterval(()=>{
-    particleOpacity += 0.02;
-    if(particleOpacity >= target){
-      particleOpacity = target;
-      clearInterval(bloomAnim);
-    }
-  },16);
-});
-
-// -----------------------
 function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   particles.forEach(p=>{
@@ -470,6 +384,53 @@ function animate(){
 }
 
 animate();
+
+/* ----------------------- */
+/* MODEL SWITCH LOGIC */
+btn1.onclick=()=>{
+  container1.classList.remove('hidden');
+  container2.classList.add('hidden');
+  btn1.classList.add('active');
+  btn2.classList.remove('active');
+
+  // bloom → particles fade in
+  let target = 1;
+  const bloomAnim = setInterval(()=>{
+    particleOpacity += 0.02;
+    if(particleOpacity >= target){
+      particleOpacity = target;
+      clearInterval(bloomAnim);
+    }
+  },16);
+};
+
+btn2.onclick=()=>{
+  container2.classList.remove('hidden');
+  container1.classList.add('hidden');
+  btn2.classList.add('active');
+  btn1.classList.remove('active');
+
+  // fade → particles fade out
+  let target = 0;
+  const fadeAnim = setInterval(()=>{
+    particleOpacity -= 0.02;
+    if(particleOpacity <= target){
+      particleOpacity = target;
+      clearInterval(fadeAnim);
+    }
+  },16);
+};
+
+/* DESCRIPTION SOUND */
+const clickSound = document.getElementById('clickSound');
+const descBtn = document.getElementById('descBtn');
+
+descBtn.addEventListener('click', () => {
+  clickSound.currentTime = 0;
+  clickSound.play().catch(()=>{});
+  document.getElementById('desc').style.display='block';
+  descBtn.style.display='none';
+});
 
 </script>
 
