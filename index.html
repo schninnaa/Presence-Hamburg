@@ -167,200 +167,92 @@ model-viewer{
 <img src="title.png" style="max-width:640px;width:100%;margin:48px 0 35px 0;">
 
 <div class="switch-btns">
-  <button id="showViewer1" class="switch-btn active">
-    <img src="ballon schild 1 fertig.png" class="switch-img">
-  </button>
-  <button id="showViewer2" class="switch-btn">
-    <img src="ballon schild 2 fertig.png" class="switch-img">
-  </button>
+<button id="showViewer1" class="switch-btn active">
+<img src="ballon schild 1 fertig.png" class="switch-img">
+</button>
+<button id="showViewer2" class="switch-btn">
+<img src="ballon schild 2 fertig.png" class="switch-img">
+</button>
 </div>
 
 <div class="viewer-container" id="container1">
-  <model-viewer
-    src="semesterproject2.glb"
-    ios-src="semesterproject2.usdz"
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    camera-controls
-    auto-rotate
-    autoplay>
-  </model-viewer>
+<model-viewer
+src="semesterproject2.glb"
+ios-src="semesterproject2.usdz"
+ar
+ar-modes="scene-viewer quick-look webxr"
+camera-controls
+auto-rotate
+autoplay>
+</model-viewer>
 </div>
 
 <div class="viewer-container hidden" id="container2">
-  <model-viewer
-    src="semesterproject2.2test.glb"
-    ios-src="semesterproject2.2test.usdz"
-    ar
-    ar-modes="scene-viewer quick-look webxr"
-    camera-controls
-    auto-rotate
-    autoplay>
-  </model-viewer>
+<model-viewer
+src="semesterproject2.2test.glb"
+ios-src="semesterproject2.2test.usdz"
+ar
+ar-modes="scene-viewer quick-look webxr"
+camera-controls
+auto-rotate
+autoplay>
+</model-viewer>
 </div>
 
 <div class="video-wrapper">
-  <video autoplay loop muted playsinline>
-    <source src="vorortvideo.mp4" type="video/mp4">
-  </video>
+<video id="mainVideo" autoplay loop playsinline>
+<source src="vorortvideo.mp4" type="video/mp4">
+</video>
 </div>
 
 <div class="description-wrapper">
-  <button class="description-button" id="descBtn">
-    <img src="ballon click.png">
-  </button>
-  <div class="viewer-description" id="desc">
+<button class="description-button" id="descBtn">
+<img src="ballon click.png">
+</button>
+
+<div class="viewer-description" id="desc">
 This digital installation explores the transformation of a public space through human presence, using the roundabout area between the Volksparkstadion and Barclays Arena in Hamburg
-as it’s prime example: a place that comes alive only when people gather for concerts or football matches. 
+as it’s prime example: a place that comes alive only when people gather for concerts or football matches.
 When the crowd leaves, the space turns quiet and grey, stripped of its energy and color. Through AR, this project visualizes how the atmosphere of a place depends on human presence,
 and how emptiness can reveal the contrast within a city that constantly moves between excitement and stillness.
-  </div>
+</div>
 </div>
 
 <div class="follow-btn-wrapper">
-  <a href="https://www.instagram.com/schninnaa/" target="_blank">
-    <img src="follow me1.png">
-  </a>
+<a href="https://www.instagram.com/schninnaa/" target="_blank">
+<img src="follow me1.png">
+</a>
 </div>
 
 <audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
 
 <script>
-/* ----------------------- */
-/* PARTICLES */
-const canvas=document.getElementById("particleCanvas");
-const ctx=canvas.getContext("2d");
-let particles=[];
-let mouse={x:0,y:0};
-let particleOpacity = 1;
 
-function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
-window.addEventListener("resize",resize);
-resize();
+/* ENABLE VIDEO SOUND AFTER FIRST INTERACTION */
+const video = document.getElementById("mainVideo");
 
-const colors = [
-  "rgba(255,230,180,0.6)",
-  "rgba(180,255,200,0.6)",
-  "rgba(200,210,255,0.6)",
-  "rgba(255,200,220,0.6)"
-];
-
-class Particle{
-  constructor(){
-    this.x=Math.random()*canvas.width;
-    this.y=Math.random()*canvas.height;
-    this.size=Math.random()*5+1;
-    this.baseSize=this.size;
-    const angle=Math.random()*Math.PI*2;
-    const speed=0.134;
-    this.vx=Math.cos(angle)*speed;
-    this.vy=Math.sin(angle)*speed;
-    this.color=colors[Math.floor(Math.random()*colors.length)];
-    this.changeTime=Math.random()*7000;
-    this.pulseTime=Math.random()*3000;
-  }
-
-  move(){
-    this.x += this.vx;
-    this.y += this.vy;
-
-    if(this.x>canvas.width)this.x=0;
-    if(this.x<0)this.x=canvas.width;
-    if(this.y>canvas.height)this.y=0;
-    if(this.y<0)this.y=canvas.height;
-
-    this.changeTime += 16;
-    if(this.changeTime > 5000 + Math.random()*5000){
-      const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-      const angle = Math.atan2(this.vy,this.vx) + (Math.random()-0.5)*0.4;
-      this.vx = Math.cos(angle)*speed;
-      this.vy = Math.sin(angle)*speed;
-      this.changeTime=0;
-    }
-
-    this.pulseTime += 16;
-    if(this.pulseTime > 2000 + Math.random()*2000){
-      this.size=this.baseSize*(0.98 + Math.random()*0.04);
-      this.pulseTime=0;
-    } else {
-      this.size += (this.baseSize - this.size)*0.05;
-    }
-
-    const dx = mouse.x - this.x;
-    const dy = mouse.y - this.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist<100){
-      this.x -= dx*0.01;
-      this.y -= dy*0.01;
-    }
-  }
-
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fillStyle=this.color.replace(/0\.6\)/, `${0.6*particleOpacity})`);
-    ctx.fill();
-  }
+function enableSound(){
+video.muted = false;
+video.play().catch(()=>{});
+document.removeEventListener("click", enableSound);
+document.removeEventListener("touchstart", enableSound);
 }
 
-for(let i=0;i<220;i++) particles.push(new Particle());
+document.addEventListener("click", enableSound);
+document.addEventListener("touchstart", enableSound);
 
-window.addEventListener("mousemove",e=>{
-  mouse.x=e.clientX;
-  mouse.y=e.clientY;
-});
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{ p.move(); p.draw(); });
-  requestAnimationFrame(animate);
-}
-
-animate();
-
-/* ----------------------- */
-/* BUTTONS LOGIC */
-const container1=document.getElementById('container1');
-const container2=document.getElementById('container2');
-const btn1=document.getElementById('showViewer1'); // bloom
-const btn2=document.getElementById('showViewer2'); // fade
-
-btn1.onclick=()=>{
-  container1.classList.remove('hidden');
-  container2.classList.add('hidden');
-  btn1.classList.add('active');
-  btn2.classList.remove('active');
-
-  let target=1;
-  const bloomAnim=setInterval(()=>{
-    particleOpacity += 0.02;
-    if(particleOpacity>=target){ particleOpacity=target; clearInterval(bloomAnim); }
-  },16);
-};
-
-btn2.onclick=()=>{
-  container2.classList.remove('hidden');
-  container1.classList.add('hidden');
-  btn2.classList.add('active');
-  btn1.classList.remove('active');
-
-  let target=0;
-  const fadeAnim=setInterval(()=>{
-    particleOpacity -= 0.02;
-    if(particleOpacity<=target){ particleOpacity=target; clearInterval(fadeAnim); }
-  },16);
-};
-
-/* ----------------------- */
 /* DESCRIPTION BUTTON SOUND */
 const clickSound=document.getElementById('clickSound');
 const descBtn=document.getElementById('descBtn');
+
 descBtn.addEventListener('click',()=>{
-  clickSound.currentTime=0;
-  clickSound.play().catch(()=>{});
-  document.getElementById('desc').style.display='block';
-  descBtn.style.display='none';
+clickSound.currentTime=0;
+clickSound.play().catch(()=>{});
+document.getElementById('desc').style.display='block';
+descBtn.style.display='none';
 });
+
 </script>
 
 </body>
