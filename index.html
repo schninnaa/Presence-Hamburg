@@ -134,12 +134,28 @@ model-viewer{
   overflow:hidden;
   margin:32px auto;
   z-index:2;
+  position:relative;
 }
 .video-wrapper video{
   width:100%;
   height:100%;
   object-fit:cover;
 }
+
+/* SOUND BUTTON */
+.sound-toggle{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  background:rgba(0,0,0,0.4);
+  border:none;
+  color:white;
+  font-size:20px;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
 .follow-btn-wrapper{
   display:flex;
   justify-content:center;
@@ -200,9 +216,13 @@ model-viewer{
 </div>
 
 <div class="video-wrapper">
-  <video id="mainVideo" autoplay loop playsinline>
+
+  <video id="mainVideo" autoplay loop muted playsinline>
     <source src="vorortvideo.mp4" type="video/mp4">
   </video>
+
+  <button class="sound-toggle" id="soundBtn">🔇</button>
+
 </div>
 
 <div class="description-wrapper">
@@ -227,14 +247,14 @@ and how emptiness can reveal the contrast within a city that constantly moves be
 
 <script>
 
-/* ENABLE VIDEO SOUND AFTER FIRST INTERACTION */
+/* SOUND TOGGLE BUTTON */
 const video=document.getElementById("mainVideo");
-function enableSound(){
-video.muted=false;
-video.play().catch(()=>{});
-document.removeEventListener("click",enableSound);
-}
-document.addEventListener("click",enableSound);
+const soundBtn=document.getElementById("soundBtn");
+
+soundBtn.onclick=()=>{
+  video.muted=!video.muted;
+  soundBtn.textContent=video.muted?"🔇":"🔊";
+};
 
 
 /* PARTICLES */
@@ -279,23 +299,6 @@ class Particle{
     if(this.y>canvas.height)this.y=0;
     if(this.y<0)this.y=canvas.height;
 
-    this.changeTime += 16;
-    if(this.changeTime > 5000 + Math.random()*5000){
-      const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-      const angle = Math.atan2(this.vy,this.vx) + (Math.random()-0.5)*0.4;
-      this.vx = Math.cos(angle)*speed;
-      this.vy = Math.sin(angle)*speed;
-      this.changeTime=0;
-    }
-
-    this.pulseTime += 16;
-    if(this.pulseTime > 2000 + Math.random()*2000){
-      this.size=this.baseSize*(0.98 + Math.random()*0.04);
-      this.pulseTime=0;
-    } else {
-      this.size += (this.baseSize - this.size)*0.05;
-    }
-
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -327,38 +330,6 @@ function animate(){
 }
 
 animate();
-
-/* BUTTONS LOGIC */
-const container1=document.getElementById('container1');
-const container2=document.getElementById('container2');
-const btn1=document.getElementById('showViewer1');
-const btn2=document.getElementById('showViewer2');
-
-btn1.onclick=()=>{
-  container1.classList.remove('hidden');
-  container2.classList.add('hidden');
-  btn1.classList.add('active');
-  btn2.classList.remove('active');
-
-  let target=1;
-  const bloomAnim=setInterval(()=>{
-    particleOpacity += 0.02;
-    if(particleOpacity>=target){ particleOpacity=target; clearInterval(bloomAnim); }
-  },16);
-};
-
-btn2.onclick=()=>{
-  container2.classList.remove('hidden');
-  container1.classList.add('hidden');
-  btn2.classList.add('active');
-  btn1.classList.remove('active');
-
-  let target=0;
-  const fadeAnim=setInterval(()=>{
-    particleOpacity -= 0.02;
-    if(particleOpacity<=target){ particleOpacity=target; clearInterval(fadeAnim); }
-  },16);
-};
 
 /* DESCRIPTION BUTTON SOUND */
 const clickSound=document.getElementById('clickSound');
