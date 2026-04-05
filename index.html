@@ -263,16 +263,20 @@ const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
 let particles = [];
 let mouse = {x:0, y:0};
-let particleOpacity = 1; // controls visibility
+let particleOpacity = 1;     // current opacity
+let targetOpacity = 1;       // where opacity is fading to
+
 function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener("resize", resize);
 resize();
+
 const colors = [
   "rgba(255,230,180,0.6)",
   "rgba(180,255,200,0.6)",
   "rgba(200,210,255,0.6)",
   "rgba(255,200,220,0.6)"
 ];
+
 class Particle{
   constructor(){
     this.x=Math.random()*canvas.width;
@@ -298,16 +302,21 @@ class Particle{
     if(dist<100){ this.x-=dx*0.01; this.y-=dy*0.01; }
   }
   draw(){
-    if(particleOpacity === 0) return; // skip drawing when hidden
+    if(particleOpacity <= 0) return;
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
     ctx.fillStyle=this.color.replace(/0\.6\)/,`${0.6*particleOpacity})`);
     ctx.fill();
   }
 }
+
 for(let i=0;i<220;i++) particles.push(new Particle());
 window.addEventListener("mousemove", e => { mouse.x=e.clientX; mouse.y=e.clientY; });
+
 function animate(){ 
+  // smooth fade animation
+  particleOpacity += (targetOpacity - particleOpacity) * 0.05; // adjust speed by changing 0.05
+
   ctx.clearRect(0,0,canvas.width,canvas.height); 
   particles.forEach(p=>{p.move();p.draw();}); 
   requestAnimationFrame(animate);
@@ -324,7 +333,7 @@ descBtn.addEventListener('click', ()=>{
   descBtn.style.display='none';
 });
 
-/* AR VIEWER SWITCH BUTTONS + PARTICLE TOGGLE */
+/* AR VIEWER SWITCH BUTTONS + PARTICLE FADE */
 const viewer1Btn = document.getElementById('showViewer1');
 const viewer2Btn = document.getElementById('showViewer2');
 const container1 = document.getElementById('container1');
@@ -337,8 +346,8 @@ function switchViewer(activeBtn, showContainer, hideContainer){
   showContainer.classList.remove('hidden');
   hideContainer.classList.add('hidden');
 
-  // Show or hide particles depending on which viewer is active
-  particleOpacity = (showContainer === container1) ? 1 : 0;
+  // fade particles in or out
+  targetOpacity = (showContainer === container1) ? 1 : 0;
 }
 
 viewer1Btn.addEventListener('click', ()=>{ switchViewer(viewer1Btn, container1, container2); });
