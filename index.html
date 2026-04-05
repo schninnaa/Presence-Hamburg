@@ -144,7 +144,6 @@ model-viewer{
   object-fit:cover;
 }
 
-/* MINIMAL SOUND TOGGLE */
 .sound-toggle{
   position:absolute;
   bottom:12px;
@@ -250,6 +249,20 @@ model-viewer{
 <audio id="clickSound" src="bottle-opening-wine-cork-pop-352701.mp3" preload="auto"></audio>
 
 <script>
+/* SOUND UNLOCK ON FIRST CLICK FOR MOBILE/BROWSERS */
+let audioUnlocked = false;
+function unlockAudio() {
+  if (!audioUnlocked) {
+    const clickSound = document.getElementById('clickSound');
+    clickSound.volume = 1;
+    clickSound.play().catch(()=>{});
+    clickSound.pause();
+    clickSound.currentTime = 0;
+    audioUnlocked = true;
+  }
+}
+document.body.addEventListener('click', unlockAudio, {once:true});
+
 /* SOUND TOGGLE */
 const video = document.getElementById("mainVideo");
 const soundBtn = document.getElementById("soundBtn");
@@ -264,7 +277,7 @@ const ctx = canvas.getContext("2d");
 let particles = [];
 let mouse = {x:0, y:0};
 let particleOpacity = 1;     // current opacity
-let targetOpacity = 1;       // where opacity is fading to
+let targetOpacity = 1;       // fade target
 
 function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener("resize", resize);
@@ -282,7 +295,6 @@ class Particle{
     this.x=Math.random()*canvas.width;
     this.y=Math.random()*canvas.height;
     this.size=Math.random()*5+1;
-    this.baseSize=this.size;
     const angle=Math.random()*Math.PI*2;
     const speed=0.134;
     this.vx=Math.cos(angle)*speed;
@@ -290,8 +302,7 @@ class Particle{
     this.color=colors[Math.floor(Math.random()*colors.length)];
   }
   move(){
-    this.x+=this.vx;
-    this.y+=this.vy;
+    this.x+=this.vx; this.y+=this.vy;
     if(this.x>canvas.width)this.x=0;
     if(this.x<0)this.x=canvas.width;
     if(this.y>canvas.height)this.y=0;
@@ -314,26 +325,25 @@ for(let i=0;i<220;i++) particles.push(new Particle());
 window.addEventListener("mousemove", e => { mouse.x=e.clientX; mouse.y=e.clientY; });
 
 function animate(){ 
-  // smooth fade animation
-  particleOpacity += (targetOpacity - particleOpacity) * 0.05; // adjust speed by changing 0.05
-
+  particleOpacity += (targetOpacity - particleOpacity) * 0.05; // fade speed
   ctx.clearRect(0,0,canvas.width,canvas.height); 
   particles.forEach(p=>{p.move();p.draw();}); 
   requestAnimationFrame(animate);
 }
 animate();
 
-/* DESCRIPTION BUTTON SOUND */
+/* DESCRIPTION BUTTON + SOUND */
 const clickSound = document.getElementById('clickSound');
 const descBtn = document.getElementById('descBtn');
 descBtn.addEventListener('click', ()=>{
   clickSound.currentTime = 0;
-  clickSound.play().catch(()=>{});
+  clickSound.volume = 1;
+  clickSound.play().catch(()=>{}); // play reliably
   document.getElementById('desc').style.display='block';
   descBtn.style.display='none';
 });
 
-/* AR VIEWER SWITCH BUTTONS + PARTICLE FADE */
+/* AR VIEWER SWITCH + PARTICLE FADE */
 const viewer1Btn = document.getElementById('showViewer1');
 const viewer2Btn = document.getElementById('showViewer2');
 const container1 = document.getElementById('container1');
@@ -346,13 +356,12 @@ function switchViewer(activeBtn, showContainer, hideContainer){
   showContainer.classList.remove('hidden');
   hideContainer.classList.add('hidden');
 
-  // fade particles in or out
   targetOpacity = (showContainer === container1) ? 1 : 0;
 }
 
 viewer1Btn.addEventListener('click', ()=>{ switchViewer(viewer1Btn, container1, container2); });
 viewer2Btn.addEventListener('click', ()=>{ switchViewer(viewer2Btn, container2, container1); });
-</script>
 
+</script>
 </body>
 </html>
