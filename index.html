@@ -263,7 +263,7 @@ const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
 let particles = [];
 let mouse = {x:0, y:0};
-let particleOpacity = 1;
+let particleOpacity = 1; // controls visibility
 function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener("resize", resize);
 resize();
@@ -298,6 +298,7 @@ class Particle{
     if(dist<100){ this.x-=dx*0.01; this.y-=dy*0.01; }
   }
   draw(){
+    if(particleOpacity === 0) return; // skip drawing when hidden
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
     ctx.fillStyle=this.color.replace(/0\.6\)/,`${0.6*particleOpacity})`);
@@ -306,7 +307,11 @@ class Particle{
 }
 for(let i=0;i<220;i++) particles.push(new Particle());
 window.addEventListener("mousemove", e => { mouse.x=e.clientX; mouse.y=e.clientY; });
-function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.move();p.draw();}); requestAnimationFrame(animate);}
+function animate(){ 
+  ctx.clearRect(0,0,canvas.width,canvas.height); 
+  particles.forEach(p=>{p.move();p.draw();}); 
+  requestAnimationFrame(animate);
+}
 animate();
 
 /* DESCRIPTION BUTTON SOUND */
@@ -319,7 +324,7 @@ descBtn.addEventListener('click', ()=>{
   descBtn.style.display='none';
 });
 
-/* AR VIEWER SWITCH BUTTONS */
+/* AR VIEWER SWITCH BUTTONS + PARTICLE TOGGLE */
 const viewer1Btn = document.getElementById('showViewer1');
 const viewer2Btn = document.getElementById('showViewer2');
 const container1 = document.getElementById('container1');
@@ -331,11 +336,13 @@ function switchViewer(activeBtn, showContainer, hideContainer){
   activeBtn.classList.add('active');
   showContainer.classList.remove('hidden');
   hideContainer.classList.add('hidden');
+
+  // Show or hide particles depending on which viewer is active
+  particleOpacity = (showContainer === container1) ? 1 : 0;
 }
 
 viewer1Btn.addEventListener('click', ()=>{ switchViewer(viewer1Btn, container1, container2); });
 viewer2Btn.addEventListener('click', ()=>{ switchViewer(viewer2Btn, container2, container1); });
-
 </script>
 
 </body>
